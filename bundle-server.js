@@ -1,6 +1,7 @@
-const express = require('express');
+//run with node . will run forever
+const express = require("express");
 const app = express();
-
-app.use(require('./build.js'));
+//express app requiring build.js
+app.use(require("./build.js"));
 
 app.listen(8081, () => console.log(`Ready to compile and serve bundle.js`));
