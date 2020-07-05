@@ -1,0 +1,121 @@
+* {
+    text-align: center;
+    font-family: "Staatliches", cursive;
+    max-width: 100%;
+    max-height: 100%;
+    font-size: 25px;
+}
+
+body {
+    background-color: darkblue;
+    color: darkblue;
+}
+
+.row {
+    display: flex;
+    background-color: rgb(194, 194, 194);
+    -webkit-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    border-radius: 10px 10px 10px 10px;
+    -moz-border-radius: 10px 10px 10px 10px;
+    -webkit-border-radius: 10px 10px 10px 10px;
+}
+
+img {
+    border-radius: 10px 10px 10px 10px;
+}
+
+.column {
+    flex: 50%;
+}
+
+h1 {
+    background-image: linear-gradient(to left, yellow, orange, violet, indigo);
+    -webkit-background-clip: text;
+    color: transparent;
+    font-size: 50px;
+}
+
+h2 {
+    color: white;
+    font-size: 50px;
+}
+
+h3 {
+    color: darkblue;
+    font-size: 40px;
+}
+
+.content {
+    z-index: 999;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    color: darkblue;
+    background-color: rgb(255, 255, 117);
+    padding: 45px 10px;
+    margin-top: 50px;
+    font-size: 25px;
+}
+
+.content:before,
+.content:after {
+    position: relative;
+    vertical-align: middle;
+    font-family: "Playfair Display", serif;
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 0;
+    color: lightcoral;
+}
+.content:before {
+    left: -5px;
+    content: "\201C";
+}
+.content:after {
+    content: "\201D";
+}
+
+footer {
+    background-image: linear-gradient(to left, yellow, orange, violet, indigo);
+    -webkit-background-clip: text;
+    color: transparent;
+    font-size: 50px;
+}
+
+form {
+    background-color: lightcoral;
+    padding: 50px 50px;
+    -webkit-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    border-radius: 10px 10px 10px 10px;
+    -moz-border-radius: 10px 10px 10px 10px;
+    -webkit-border-radius: 10px 10px 10px 10px;
+    border: 0px solid #000000;
+}
+
+.error {
+    background-color: red;
+    color: white;
+    font-weight: bold;
+    font-family: "Courier New", Courier, monospace;
+}
+
+input {
+    color: darkblue;
+    background-color: lightgrey;
+    font-size: 25px;
+}
+
+input[type="submit"] {
+    color: white;
+    border-radius: 25px;
+    background-image: linear-gradient(to right, orange, yellow);
+    padding: 10px 10px;
+}
+
+input[type="submit"]:hover {
+    background-image: linear-gradient(to left, orange, yellow);
+}

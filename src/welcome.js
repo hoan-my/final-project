@@ -5,8 +5,9 @@ export default function Welcome() {
     return (
         <div>
             <img src="WOC.png" />
-            <h3>Welcome to my Social Network</h3>
+            <h1>WOMEN OF COLORS IN TECH</h1>
             <Register />
+            <footer>©Hoan-My 2020</footer>
         </div>
     );
 }
