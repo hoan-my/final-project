@@ -15,36 +15,37 @@ export default class Register extends React.Component {
     }
     handleChange(e) {
         console.log(e.target.value);
-        this.setUserInfo({
-            first: e.target.value,
-            last: e.target.value,
-            email: e.target.value,
-            password: e.target.value,
+        this.setState({
+            [e.target.name]: e.target.value,
+            // last: e.target.value,
+            // email: e.target.value,
+            // password: e.target.value,
         });
         console.log("Register state:", this.state);
     }
     register(e) {
         e.preventDefault();
         let self = this;
-        console.log("this.state.first:", this.state.first);
+
         let userInfo = {
             first: self.state.first,
             last: self.state.last,
             email: self.state.email,
             password: self.state.password,
         };
+
         console.log("register function running");
         axios
             .post("/register", userInfo)
             .then((response) => {
                 console.log("response /register:", response);
                 if (response.data.error) {
-                    self.setUserInfo({
+                    self.setState({
                         RegistrationError: true,
                     });
-                    console.log(self.state.RegistrationError);
+                    //location.replace("/"); //change here!!
                 } else {
-                    self.setUserInfo({
+                    self.setState({
                         RegistrationError: false,
                     });
                     location.replace("/");

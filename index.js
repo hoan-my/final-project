@@ -80,7 +80,7 @@ app.post("/register", (req, res) => {
         .then((hashedUserPass) => {
             db.insertUser(userFirst, userLast, userEmail, hashedUserPass)
                 .then((result) => {
-                    console.log(result);
+                    console.log("result in insertUser:", result);
                     req.session.userId = result.rows[0].id;
                     res.json();
                 })
