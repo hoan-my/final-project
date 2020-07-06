@@ -1,12 +1,10 @@
-export default class Register extends React.Component {
+export default class Login extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            first: "",
-            last: "",
             email: "",
             password: "",
-            RegistrationError: false,
+            LoginError: false,
         };
     }
     handleChange(e) {
@@ -17,44 +15,42 @@ export default class Register extends React.Component {
             // email: e.target.value,
             // password: e.target.value,
         });
-        console.log("Register state:", this.state);
+        console.log("Login state:", this.state);
     }
-    register(e) {
+    login(e) {
         e.preventDefault();
         let self = this;
 
         let userInfo = {
-            first: self.state.first,
-            last: self.state.last,
             email: self.state.email,
             password: self.state.password,
         };
 
-        console.log("register function running");
+        console.log("login function running");
         axios
-            .post("/register", userInfo)
+            .post("/login", userInfo)
             .then((response) => {
-                console.log("response /register:", response);
+                console.log("response /login:", response);
                 if (response.data.error) {
                     self.setState({
-                        RegistrationError: true,
+                        LoginError: true,
                     });
                     //location.replace("/"); //change here!!
                 } else {
                     self.setState({
-                        RegistrationError: false,
+                        LoginError: false,
                     });
                     location.replace("/");
                 }
             })
             .catch((err) => {
-                console.log("error in axios POST /register:", err);
+                console.log("error in axios POST /login:", err);
             });
     }
     render() {
         return (
             <div>
-                {this.state.RegistrationError ? (
+                {this.state.LoginError ? (
                     <p className="error">
                         Oops... Please try again or refresh the page
                     </p>
@@ -68,17 +64,7 @@ export default class Register extends React.Component {
                             Equality in the Tech World.
                         </h3>
                         <form>
-                            <h2> Be part of the Change now ! </h2>
-                            <input
-                                name="first"
-                                placeholder="First name"
-                                onChange={(e) => this.handleChange(e)}
-                            />
-                            <input
-                                name="last"
-                                placeholder="Last name"
-                                onChange={(e) => this.handleChange(e)}
-                            />
+                            <h2> Already part of the community ? </h2>
                             <input
                                 type="email"
                                 name="email"
@@ -93,16 +79,17 @@ export default class Register extends React.Component {
                             />
                             <input
                                 type="submit"
-                                value="Register"
-                                onClick={(e) => this.register(e)}
+                                value="Login"
+                                onClick={(e) => this.login(e)}
                             />
                         </form>
                         <div className="content">
-                            Diversity drives innovation - when we limit who can
-                            contribute, we in turn limit what problems we can
-                            solve. — Telle Whitney
+                            When we listen and celebrate what is both common and
+                            different, we become a wiser, more inclusive, and
+                            better organization. — Pat Wadors, Head of HR at
+                            LinkedIn
                         </div>
-                        <Link to="/login"> Login </Link>
+                        <Link to="/register"> Register </Link>
                     </div>
                     <div className="column">
                         <img src="img1.jpg" />

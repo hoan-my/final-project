@@ -24,6 +24,14 @@ app.use(
     })
 );
 
+//csurf
+app.use(csurf());
+
+app.use(function (req, res, next) {
+    res.cookie("mytoken", req.csrfToken());
+    next();
+});
+
 //main node app
 if (process.env.NODE_ENV != "production") {
     app.use(
@@ -95,6 +103,20 @@ app.post("/register", (req, res) => {
         });
 });
 
+//csurf and token
+axios.post(
+    "/login",
+    { email, password },
+    {
+        xsrfCookieName: "mytoken",
+        xsrfHeaderName: "csrf-token", // the csurf middleware automatically checks this header for the token
+    }
+);
+
 app.listen(8080, function () {
     console.log("server is running...");
 });
+
+// login
+// res.json
+// replace / or setState
