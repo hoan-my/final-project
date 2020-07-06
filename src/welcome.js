@@ -9,13 +9,10 @@ export default function Welcome() {
         <div>
             <h1>WOMEN OF COLORS IN TECH</h1>
             <img src="WOC.png" />
-
             <HashRouter>
                 <React.Fragment>
-                    <p>Hello</p>
                     <Route exact path="/" component={Register} />
                     <Route path="/login" component={Login} />
-                    <p>Salut</p>
                 </React.Fragment>
             </HashRouter>
             <footer>©Hoan-My 2020</footer>

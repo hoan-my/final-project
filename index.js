@@ -8,6 +8,7 @@ const cookieSession = require("cookie-session");
 const bc = require("./bc.js");
 //// database
 const db = require("./db.js");
+const csurf = require("csurf");
 
 app.use(compression());
 app.use(
@@ -26,6 +27,13 @@ app.use(
 
 //csurf
 app.use(csurf());
+
+app.use(function (req, res, next) {
+    res.setHeader("x-frame-options", "deny");
+    res.locals.csrfToken = req.csrfToken();
+    res.locals.user = req.session.user;
+    next();
+});
 
 app.use(function (req, res, next) {
     res.cookie("mytoken", req.csrfToken());
@@ -104,14 +112,50 @@ app.post("/register", (req, res) => {
 });
 
 //csurf and token
-axios.post(
-    "/login",
-    { email, password },
-    {
-        xsrfCookieName: "mytoken",
-        xsrfHeaderName: "csrf-token", // the csurf middleware automatically checks this header for the token
+app.post("/login", (req, res) => {
+    console.log(req.body);
+    let password = req.body.password;
+    if (password == "") {
+        password = null;
     }
-);
+    let email = req.body.email;
+    if (email == "") {
+        email = null;
+    }
+    let error = {
+        error: true,
+    };
+    db.getUser(email, password)
+        .then((result) => {
+            console.log("result in getUser:", result);
+            const user = result.rows[0];
+            if (!user) {
+                res.render("login", {
+                    error: true,
+                });
+            }
+            const storedPassword = user.password;
+            bc.compare(password, storedPassword)
+                .then((match) => {
+                    if (match === true) {
+                        const { id, first, last } = user;
+                        req.session.user = { id, first, last };
+
+                        res.sendStatus(200); // change path here
+                    } else {
+                        res.sendStatus(401);
+                    }
+                })
+                .catch((err) => {
+                    console.log("error in getUser POST/login:", err);
+                    res.json(error);
+                });
+        })
+        .catch((err) => {
+            console.log("error in hash POST /login:", err);
+            res.json(error);
+        });
+});
 
 app.listen(8080, function () {
     console.log("server is running...");
@@ -120,3 +164,4 @@ app.listen(8080, function () {
 // login
 // res.json
 // replace / or setState
+//react router
