@@ -23,3 +23,34 @@ exports.getUser = (email) => {
         [email]
     );
 };
+
+exports.insertResetCode = (email, code) => {
+    return db.query(
+        `
+        INSERT INTO reset_codes (email, code) VALUES ($1, $2) 
+        `,
+        [email, code]
+    );
+};
+
+exports.checkResetCode = (email) => {
+    return db.query(
+        `
+        SELECT * FROM reset_codes
+        WHERE email=$1 AND CURRENT_TIMESTAMP - created_at < INTERVAL '10 minutes'
+        ORDER BY id DESC
+        LIMIT 1
+        `,
+        [email]
+    );
+};
+
+exports.updatePassword = (email, password) => {
+    return db.query(
+        `
+        UPDATE users SET password=$2
+        WHERE email=$1
+        `,
+        [email, password]
+    );
+};

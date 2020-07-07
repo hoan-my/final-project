@@ -111,11 +111,21 @@ input {
 
 input[type="submit"] {
     color: white;
-    border-radius: 25px;
+    /* border-radius: 25px; */
     background-image: linear-gradient(to right, orange, yellow);
     padding: 10px 10px;
 }
 
 input[type="submit"]:hover {
-    background-image: linear-gradient(to left, orange, yellow);
+    background-image: linear-gradient(to left, lightcoral, pink);
+}
+
+Link {
+    background-color: pink;
+    color: white;
+    text-decoration: none;
+}
+
+Link:hover {
+    background-color: rgb(255, 255, 117);
 }

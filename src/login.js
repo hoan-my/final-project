@@ -87,13 +87,16 @@ export default class Login extends React.Component {
                                 onClick={(e) => this.login(e)}
                             />
                         </form>
+                        <p>
+                            Forgot your password ?
+                            <Link to="/resetPassword"> Reset </Link>
+                        </p>
                         <div className="content">
                             When we listen and celebrate what is both common and
                             different, we become a wiser, more inclusive, and
                             better organization. — Pat Wadors, Head of HR at
                             LinkedIn
                         </div>
-                        <Link to="/register"> Register </Link>
                     </div>
                     <div className="column">
                         <img src="img1.jpg" />

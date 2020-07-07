@@ -157,11 +157,111 @@ app.post("/login", (req, res) => {
         });
 });
 
+app.post("/password/reset/start", (req, res) => {
+    let email = req.body.email;
+    if (email == "") {
+        email = null;
+    }
+    let error = {
+        error: true,
+    };
+    console.log("req.body /password/reset/start", req.body);
+    db.getUser(req.body.email)
+        .then((result) => {
+            console.log("result rows /password/reset/start:", result.rows);
+            if (result.rows.length == 0) {
+                res.json(error);
+            } else {
+                const secretCode = cryptoRandomString({
+                    length: 6,
+                });
+                console.log(secretCode);
+                db.insertResetCode(email, secretCode)
+                    .then(() => {
+                        sendEmail(
+                            userEmail,
+                            "Your secret code",
+                            `In order to reset your password, please enter your : ${secretCode}`
+                        )
+                            .then(() => {
+                                res.json();
+                            })
+                            .catch((err) => {
+                                console.log(
+                                    "error in sendEmail /password/reset/start:",
+                                    err
+                                );
+                                res.json(error);
+                            });
+                    })
+                    .catch((err) => {
+                        console.log(
+                            "error in inserResetCode /password/reset/start:",
+                            err
+                        );
+                        res.json(error);
+                    });
+            }
+        })
+        .catch((err) => {
+            console.log("error in getUser /password/reset/start:", err);
+            res.json(error);
+        });
+});
+
+app.post("/password/reset/verify", (req, res) => {
+    console.log(req.body);
+    let email = req.body.email;
+    if (email == "") {
+        email = null;
+    }
+    let changedPassword = req.body.changedPassword;
+    if (changedPassword == "") {
+        changedPassword = null;
+    }
+    let resetCode = req.body.resetCode;
+    if (resetCode == "") {
+        resetCode = null;
+    }
+    let error = {
+        error: true,
+    };
+
+    db.checkResetCode(email)
+        .then((result) => {
+            console.log(result.rows);
+            if (resetCode == result.rows[0].code) {
+                hash(changedPassword)
+                    .then((hashedPassword) => {
+                        db.updatePassword(email, hashedPassword)
+                            .then(() => {
+                                res.json({ passwordUpdated: true });
+                            })
+                            .catch((err) => {
+                                console.log(
+                                    "error in updatePassword /password/reset/verify:",
+                                    err
+                                );
+                                res.json(error);
+                            });
+                    })
+                    .catch((err) => {
+                        console.log(
+                            "error in hash /password/reset/verify:",
+                            err
+                        );
+                        res.json(error);
+                    });
+            } else {
+                res.json(error);
+            }
+        })
+        .catch((err) => {
+            console.log("error in checkResetCode /password/reset/verify:", err);
+            res.json(error);
+        });
+});
+
 app.listen(8080, function () {
     console.log("server is running...");
 });
-
-// login
-// res.json
-// replace / or setState
-//react router

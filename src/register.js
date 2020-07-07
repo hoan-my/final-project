@@ -100,12 +100,15 @@ export default class Register extends React.Component {
                                 onClick={(e) => this.register(e)}
                             />
                         </form>
+                        <p>
+                            Already part of the community ?
+                            <Link to="/login"> Login </Link>
+                        </p>
                         <div className="content">
                             Diversity drives innovation - when we limit who can
                             contribute, we in turn limit what problems we can
                             solve. — Telle Whitney
                         </div>
-                        <Link to="/login"> Login </Link>
                     </div>
                     <div className="column">
                         <img src="img1.jpg" />
