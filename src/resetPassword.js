@@ -108,6 +108,7 @@ export default class ResetPassword extends React.Component {
     }
     getCurrentDisplay() {
         let self = this;
+        console.log("getCurrentDisplay is running");
         if (!self.state.resetEmailSent) {
             console.log("IF NOT RESET EMAIL SENT:", !self.state.resetEmailSent);
             return (
@@ -174,7 +175,7 @@ export default class ResetPassword extends React.Component {
         }
     }
     render() {
-        // console.log(!this.state.resetEmailSent);
+        console.log("Reset Password rendering");
         return (
             <div>
                 {this.state.errorInResetPassword ? (

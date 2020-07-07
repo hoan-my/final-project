@@ -64,21 +64,21 @@ app.get("/welcome", (req, res) => {
 
 app.post("/register", (req, res) => {
     console.log(req.body);
-    let userPass = req.body.password;
-    if (userPass == "") {
-        userPass = null;
+    let password = req.body.password;
+    if (password == "") {
+        password = null;
     }
-    let userFirst = req.body.first;
-    if (userFirst == "") {
-        userFirst = null;
+    let first = req.body.first;
+    if (first == "") {
+        first = null;
     }
-    let userLast = req.body.last;
-    if (userLast == "") {
-        userLast = null;
+    let last = req.body.last;
+    if (last == "") {
+        last = null;
     }
-    let userEmail = req.body.email;
-    if (userEmail == "") {
-        userEmail = null;
+    let email = req.body.email;
+    if (email == "") {
+        email = null;
     }
     let error = {
         error: true,
@@ -86,7 +86,7 @@ app.post("/register", (req, res) => {
 
     bc.hash(userPass)
         .then((hashedUserPass) => {
-            db.insertUser(userFirst, userLast, userEmail, hashedUserPass)
+            db.insertUser(first, last, email, hashedUserPass)
                 .then((result) => {
                     console.log("result in insertUser:", result);
                     req.session.userId = result.rows[0].id;
@@ -149,7 +149,7 @@ app.post("/login", (req, res) => {
         });
 });
 
-app.post("/resetPassword/start", (req, res) => {
+app.post("/password/reset/start", (req, res) => {
     let email = req.body.email;
     if (email == "") {
         email = null;
@@ -157,10 +157,10 @@ app.post("/resetPassword/start", (req, res) => {
     let error = {
         error: true,
     };
-    console.log("/resetPassword/start", req.body);
+    console.log("/password/reset/start", req.body);
     db.getUser(req.body.email)
         .then((result) => {
-            console.log("result rows /resetPassword/start:", result.rows);
+            console.log("result rows /password/reset/start:", result.rows);
             if (result.rows.length == 0) {
                 res.json(error);
             } else {
@@ -180,7 +180,7 @@ app.post("/resetPassword/start", (req, res) => {
                             })
                             .catch((err) => {
                                 console.log(
-                                    "error in sendEmail /resetPassword/start:",
+                                    "error in sendEmail /password/reset/start:",
                                     err
                                 );
                                 res.json(error);
@@ -188,7 +188,7 @@ app.post("/resetPassword/start", (req, res) => {
                     })
                     .catch((err) => {
                         console.log(
-                            "error in inserResetCode /resetPassword/start:",
+                            "error in inserResetCode /password/reset/start:",
                             err
                         );
                         res.json(error);
@@ -196,12 +196,12 @@ app.post("/resetPassword/start", (req, res) => {
             }
         })
         .catch((err) => {
-            console.log("error in getUser /resetPassword/start:", err);
+            console.log("error in getUser /password/reset/start:", err);
             res.json(error);
         });
 });
 
-app.post("/resetPassword/verify", (req, res) => {
+app.post("/password/reset/verify", (req, res) => {
     console.log(req.body);
     let email = req.body.email;
     if (email == "") {
@@ -231,7 +231,7 @@ app.post("/resetPassword/verify", (req, res) => {
                             })
                             .catch((err) => {
                                 console.log(
-                                    "error in updatePassword /resetPassword/verify:",
+                                    "error in updatePassword /password/reset/verify:",
                                     err
                                 );
                                 res.json(error);
@@ -239,7 +239,7 @@ app.post("/resetPassword/verify", (req, res) => {
                     })
                     .catch((err) => {
                         console.log(
-                            "error in hash /resetPassword/verify:",
+                            "error in hash /password/reset/verify:",
                             err
                         );
                         res.json(error);
@@ -249,7 +249,7 @@ app.post("/resetPassword/verify", (req, res) => {
             }
         })
         .catch((err) => {
-            console.log("error in checkResetCode /resetPassword/verify:", err);
+            console.log("error in checkResetCode /password/reset/verify:", err);
             res.json(error);
         });
 });

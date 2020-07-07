@@ -30,6 +30,12 @@ export default class App extends React.Component {
         });
     }
 
+    setImage(newProfilePic) {
+        this.setState({
+            profilePic: newProfilePic
+        })
+    }
+
     //rendering profile picture and passing props (first)
     render() {
         console.log("this.state:", this.state);
@@ -40,12 +46,13 @@ export default class App extends React.Component {
                     first={this.state.first}
                     last={this.state.last}
                     profilePic={this.state.profilePic}
+                    toggleModal={this.toggleModal}
                 />
                 <p onClick={() => this.toggleModal()}>
                     {" "}
                     click me to toggle the modal{" "}
                 </p>
-                {this.state.uploaderIsVisible && <Uploader />}
+                {this.state.uploaderIsVisible && <Uploader setImage={this.setImage} />}
             </div>
         );
     }
