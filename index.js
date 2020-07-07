@@ -62,14 +62,6 @@ app.get("/welcome", (req, res) => {
     }
 });
 
-app.get("*", function (req, res) {
-    if (!req.session.userId) {
-        res.redirect("/welcome");
-    } else {
-        res.sendFile(__dirname + "/index.html");
-    }
-});
-
 app.post("/register", (req, res) => {
     console.log(req.body);
     let userPass = req.body.password;
@@ -141,7 +133,7 @@ app.post("/login", (req, res) => {
                         const { id, first, last } = user;
                         req.session.user = { id, first, last };
 
-                        res.sendStatus(200); // change path here
+                        res.redirect("/"); // change path here
                     } else {
                         res.sendStatus(401);
                     }
@@ -157,7 +149,7 @@ app.post("/login", (req, res) => {
         });
 });
 
-app.post("/password/reset/start", (req, res) => {
+app.post("/resetPassword/start", (req, res) => {
     let email = req.body.email;
     if (email == "") {
         email = null;
@@ -165,10 +157,10 @@ app.post("/password/reset/start", (req, res) => {
     let error = {
         error: true,
     };
-    console.log("req.body /password/reset/start", req.body);
+    console.log("/resetPassword/start", req.body);
     db.getUser(req.body.email)
         .then((result) => {
-            console.log("result rows /password/reset/start:", result.rows);
+            console.log("result rows /resetPassword/start:", result.rows);
             if (result.rows.length == 0) {
                 res.json(error);
             } else {
@@ -188,7 +180,7 @@ app.post("/password/reset/start", (req, res) => {
                             })
                             .catch((err) => {
                                 console.log(
-                                    "error in sendEmail /password/reset/start:",
+                                    "error in sendEmail /resetPassword/start:",
                                     err
                                 );
                                 res.json(error);
@@ -196,7 +188,7 @@ app.post("/password/reset/start", (req, res) => {
                     })
                     .catch((err) => {
                         console.log(
-                            "error in inserResetCode /password/reset/start:",
+                            "error in inserResetCode /resetPassword/start:",
                             err
                         );
                         res.json(error);
@@ -204,12 +196,12 @@ app.post("/password/reset/start", (req, res) => {
             }
         })
         .catch((err) => {
-            console.log("error in getUser /password/reset/start:", err);
+            console.log("error in getUser /resetPassword/start:", err);
             res.json(error);
         });
 });
 
-app.post("/password/reset/verify", (req, res) => {
+app.post("/resetPassword/verify", (req, res) => {
     console.log(req.body);
     let email = req.body.email;
     if (email == "") {
@@ -239,7 +231,7 @@ app.post("/password/reset/verify", (req, res) => {
                             })
                             .catch((err) => {
                                 console.log(
-                                    "error in updatePassword /password/reset/verify:",
+                                    "error in updatePassword /resetPassword/verify:",
                                     err
                                 );
                                 res.json(error);
@@ -247,7 +239,7 @@ app.post("/password/reset/verify", (req, res) => {
                     })
                     .catch((err) => {
                         console.log(
-                            "error in hash /password/reset/verify:",
+                            "error in hash /resetPassword/verify:",
                             err
                         );
                         res.json(error);
@@ -257,9 +249,17 @@ app.post("/password/reset/verify", (req, res) => {
             }
         })
         .catch((err) => {
-            console.log("error in checkResetCode /password/reset/verify:", err);
+            console.log("error in checkResetCode /resetPassword/verify:", err);
             res.json(error);
         });
+});
+
+app.get("*", function (req, res) {
+    if (!req.session.userId) {
+        res.redirect("/welcome");
+    } else {
+        res.sendFile(__dirname + "/index.html");
+    }
 });
 
 app.listen(8080, function () {

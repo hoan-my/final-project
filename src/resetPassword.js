@@ -48,7 +48,7 @@ export default class ResetPassword extends React.Component {
         };
         console.log(self.state.resetEmail);
         axios
-            .post("/password/reset/start", userInfo)
+            .post("/resetPassword/start", userInfo)
             .then((response) => {
                 console.log(response);
                 if (response.data.error) {
@@ -79,7 +79,7 @@ export default class ResetPassword extends React.Component {
             resetCode: self.state.resetCode,
         };
         axios
-            .post("/password/reset/verify", userInfo)
+            .post("/resetPassword/verify", userInfo)
             .then((result) => {
                 console.log(result);
                 console.log("self.state /password/reset/verify:", self.state);
