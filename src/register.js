@@ -42,12 +42,11 @@ export default class Register extends React.Component {
                     self.setState({
                         RegistrationError: true,
                     });
-                    location.replace("/login"); //change here!!
+                    location.replace("/"); //change here!!
                 } else {
                     self.setState({
                         RegistrationError: false,
                     });
-                    location.replace("/");
                 }
             })
             .catch((err) => {

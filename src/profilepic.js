@@ -7,8 +7,14 @@ export default function ProfilePic(props) {
     // if a user does not have a profilePic yet, we need to render a profilePic for them => How can we render a default profilePic for them
     return (
         <div>
-            <p>first name, last name</p>
-            <img />
+            <p>
+                {props.firstname} {props.lastname}
+            </p>
+            <img
+                className="profilePic"
+                src={props.profilePic}
+                onClick={props.toggleModal}
+            />
         </div>
     );
 }

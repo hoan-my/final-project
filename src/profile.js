@@ -8,7 +8,13 @@ export default function Profile(props) {
             <h1>This is my Profile Component</h1>
             <h2>My name is {props.first}</h2>
 
-            <ProfilePic dill={this.props.dill} />
+            <ProfilePic
+                first={props.first}
+                last={props.last}
+                profilePic={props.profilePic}
+                toggleModal={props.toggleModal}
+                setImage={props.setImage}
+            />
         </div>
     );
 }

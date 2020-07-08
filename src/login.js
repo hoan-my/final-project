@@ -44,7 +44,7 @@ export default class Login extends React.Component {
                     self.setState({
                         LoginError: false,
                     });
-                    location.replace("/profile");
+                    location.replace("/");
                 }
             })
             .catch((err) => {

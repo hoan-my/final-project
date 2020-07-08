@@ -11,16 +11,24 @@ export default class App extends React.Component {
             uploaderIsVisible: false,
         };
         this.toggleModal = this.toggleModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
+        this.componentDidMount = this.componentDidMount.bind(this);
+        this.setImage = this.setImage.bind(this);
     }
 
     //lifecycle methods from React (like mounted version)
     componentDidMount() {
         console.log("my component has mounted");
         // axios request to the server to get info about the user (first, last, profile pic)
-        axios.get("/user").then((response) => {
+        axios.get("/profile").then((response) => {
+            console.log("response /profile: ", response);
             //store response from server in state
             //COMPLETE HERE
             // log "this.sate" and see user first, last, profil pic
+            if (!response.data.profilePic) {
+                response.data.profilePic = "/profilePic.jpeg";
+            }
+            this.setState(response.data);
         });
     }
 
@@ -37,25 +45,41 @@ export default class App extends React.Component {
         });
     }
 
+    closeModal() {
+        console.log("closeModal is running");
+        this.setState({
+            uploaderIsVisible: true,
+        });
+    }
     //rendering profile picture and passing props (first)
     render() {
         console.log("this.state:", this.state);
         return (
             <div>
                 <h1>App</h1>
-                <Profile />
+                <Profile
+                    first={this.state.first}
+                    last={this.state.last}
+                    profilePic={this.state.profilePic}
+                    toggleModal={this.toggleModal}
+                    setImage={this.setImage}
+                />
                 {/* <ProfilePic
                     first={this.state.first}
                     last={this.state.last}
                     profilePic={this.state.profilePic}
                     toggleModal={this.toggleModal}
+                    setImage={this.setImage}
                 /> */}
-                <p onClick={() => this.toggleModal()}>
+                {/* <p onClick={() => this.toggleModal()}>
                     {" "}
                     click me to toggle the modal{" "}
-                </p>
+                </p> */}
                 {this.state.uploaderIsVisible && (
-                    <Uploader setImage={this.setImage} />
+                    <Uploader
+                        setImage={this.setImage}
+                        closeModal={this.closeModal}
+                    />
                 )}
             </div>
         );

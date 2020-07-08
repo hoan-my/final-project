@@ -11,6 +11,32 @@ const db = require("./db.js");
 const csurf = require("csurf");
 const { sendEmail } = require("./ses");
 const cryptoRandomString = require("crypto-random-string");
+// s3 images
+const s3 = require("./s3");
+const { s3Url } = require("./config.json");
+// FILE UPLOAD BOILERPLATE (cf. imageboard) //
+
+const multer = require("multer"); // save file to hard drive
+const uidSafe = require("uid-safe");
+const path = require("path");
+
+const diskStorage = multer.diskStorage({
+    destination: function (req, file, callback) {
+        callback(null, __dirname + "/uploads"); //storing file in /uploads folder
+    },
+    filename: function (req, file, callback) {
+        uidSafe(24).then(function (uid) {
+            callback(null, uid + path.extname(file.originalname));
+        }); //uidSafe generates random names
+    },
+});
+
+const uploader = multer({
+    storage: diskStorage,
+    limits: {
+        fileSize: 2097152, //limit saved files
+    },
+});
 
 app.use(compression());
 app.use(
@@ -64,6 +90,22 @@ app.get("/welcome", (req, res) => {
     }
 });
 
+app.get("/profile", (req, res) => {
+    db.getUser(req.session.userId)
+        .then((result) => {
+            console.log("result GET /profile: ", result);
+            res.json({
+                first: result.rows[0].first,
+                last: result.rows[0].last,
+                profilePic: result.rows[0].imageUrl,
+            });
+        })
+        .catch((err) => {
+            res.sendStatus(500);
+            console.log("Error in GET/profile: ", err);
+        });
+});
+
 app.post("/register", (req, res) => {
     console.log(req.body);
     let password = req.body.password;
@@ -92,7 +134,7 @@ app.post("/register", (req, res) => {
                 .then((result) => {
                     console.log("result in insertUser:", result);
                     req.session.userId = result.rows[0].id;
-                    res.json();
+                    res.json(result.rows[0);
                 })
                 .catch((err) => {
                     console.log("error in insertUser /register:", err);
@@ -163,41 +205,37 @@ app.post("/resetPassword/start", (req, res) => {
     db.getUser(email)
         .then((result) => {
             console.log("result rows /resetPassword/start:", result.rows);
-            if (result.rows.length == 0) {
-                res.json(error);
-            } else {
-                const cryptoRandomString = require("crypto-random-string");
-                const secretCode = cryptoRandomString({
-                    length: 6,
+            const cryptoRandomString = require("crypto-random-string");
+            const secretCode = cryptoRandomString({
+                length: 6,
+            });
+            console.log(secretCode);
+            db.insertResetCode(email, secretCode)
+                .then(() => {
+                    console.log("insertResetCode is running");
+                    sendEmail(
+                        email,
+                        "Your secret code",
+                        `In order to reset your password, please enter your : ${secretCode}`
+                    )
+                        .then(() => {
+                            res.json("success");
+                        })
+                        .catch((err) => {
+                            console.log(
+                                "error in sendEmail /resetPassword/start:",
+                                err
+                            );
+                            res.json(error);
+                        });
+                })
+                .catch((err) => {
+                    console.log(
+                        "error in inserResetCode /resetPassword/start:",
+                        err
+                    );
+                    res.json(error);
                 });
-                console.log(secretCode);
-                db.insertResetCode(email, secretCode)
-                    .then(() => {
-                        console.log("insertResetCode is running");
-                        sendEmail(
-                            email,
-                            "Your secret code",
-                            `In order to reset your password, please enter your : ${secretCode}`
-                        )
-                            .then(() => {
-                                res.json("success");
-                            })
-                            .catch((err) => {
-                                console.log(
-                                    "error in sendEmail /resetPassword/start:",
-                                    err
-                                );
-                                res.json(error);
-                            });
-                    })
-                    .catch((err) => {
-                        console.log(
-                            "error in inserResetCode /resetPassword/start:",
-                            err
-                        );
-                        res.json(error);
-                    });
-            }
         })
         .catch((err) => {
             console.log("error in getUser /resetPassword/start:", err);
@@ -258,6 +296,24 @@ app.post("/resetPassword/verify", (req, res) => {
             console.log("error in checkResetCode /resetPassword/verify:", err);
             res.json(error);
         });
+});
+
+app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
+    console.log("file:", req.file); //req.file is file just uploaded
+    console.log("input:", req.body); //req.body is input fields (username, title, description)
+
+    const { filename } = req.file;
+    const imageUrl = `${s3Url}${filename}`; //full url of the file (req.file => filename) + cloud url from aws
+
+    if (filename) {
+        return db.updateImage(req.session.userId, imageUrl).then((result) => {
+            res.json(result.rows[0]);
+        });
+    } else {
+        res.json({
+            success: false,
+        });
+    }
 });
 
 app.get("*", function (req, res) {

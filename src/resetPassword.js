@@ -46,7 +46,7 @@ export default class ResetPassword extends React.Component {
         let userInfo = {
             email: self.state.email,
         };
-        console.log(self.state.email);
+        console.log(("self.state.email:", self.state.email));
         axios
             .post("/resetPassword/start", userInfo)
             .then((response) => {
@@ -69,34 +69,33 @@ export default class ResetPassword extends React.Component {
     changePassword(e) {
         console.log("changePassword running");
         e.preventDefault();
-        let self = this;
+        // let self = this;
         self.setState({
             errorInResetPassword: false,
         });
-        let userInfo = {
-            email: self.state.email,
-            resetCode: self.state.resetCode,
-            changedPassword: self.state.changedPassword,
-        };
-        console.log("userInfo", userInfo);
-        axios
-            .post("/resetPassword/verify", userInfo)
-            .then((result) => {
-                console.log("resetPassword/verify result:", result); //PROBLEMMMMMMM : result is not correct
-                console.log("self.state /resetPassword/verify:", self.state);
-                console.log(result.data.changedPassword);
-                if (result.data.changedPassword) {
-                    console.log("if result.data.passwordUpdated TRUE");
-                    self.setState({
-                        passwordChangeSuccess: true,
-                    });
+        // let userInfo = {
+        //     email: self.state.email,
+        //     resetCode: self.state.resetCode,
+        //     changedPassword: self.state.changedPassword,
+        // };
 
-                    console.log(self.state);
-                } else {
-                    self.setState({
-                        errorInResetPassword: true,
-                    });
-                }
+        axios
+            .post("/resetPassword/verify", this.state)
+            .then((result) => {
+                // console.log("resetPassword/verify result:", result); //PROBLEMMMMMMM : result is not correct
+                // console.log("self.state /resetPassword/verify:", self.state);
+                // console.log(result.data.changedPassword);
+                // if (result.data.changedPassword) {
+                //     console.log("if result.data.passwordUpdated TRUE");
+                self.setState({
+                    passwordChangeSuccess: true,
+                });
+
+                //     console.log(self.state);
+                // } else {
+                //     self.setState({
+                //         errorInResetPassword: true,
+                //     });
             })
             .catch((err) => {
                 console.log("error in axios POST /resetPassword/verify :", err);

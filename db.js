@@ -52,3 +52,15 @@ exports.updatePassword = (email, password) => {
         [email, password]
     );
 };
+
+exports.updateImage = (id, imageUrl) => {
+    return db.query(
+        `
+        UPDATE users 
+        SET imageUrl=$2
+        WHERE id=$1
+        RETURNING imageUrl
+        `,
+        [id, imageUrl]
+    );
+};
