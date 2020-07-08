@@ -37,9 +37,7 @@ exports.checkResetCode = (email) => {
     return db.query(
         `
         SELECT * FROM reset_codes
-        WHERE email=$1 AND CURRENT_TIMESTAMP - created_at < INTERVAL '10 minutes'
-        ORDER BY id DESC
-        LIMIT 1
+        WHERE email=$1 AND CURRENT_TIMESTAMP - created_at < INTERVAL '60 minutes'
         `,
         [email]
     );

@@ -9,6 +9,8 @@ const bc = require("./bc.js");
 //// database
 const db = require("./db.js");
 const csurf = require("csurf");
+const { sendEmail } = require("./ses");
+const cryptoRandomString = require("crypto-random-string");
 
 app.use(compression());
 app.use(
@@ -84,9 +86,9 @@ app.post("/register", (req, res) => {
         error: true,
     };
 
-    bc.hash(userPass)
-        .then((hashedUserPass) => {
-            db.insertUser(first, last, email, hashedUserPass)
+    bc.hash(password)
+        .then((hashedPassword) => {
+            db.insertUser(first, last, email, hashedPassword)
                 .then((result) => {
                     console.log("result in insertUser:", result);
                     req.session.userId = result.rows[0].id;
@@ -149,7 +151,7 @@ app.post("/login", (req, res) => {
         });
 });
 
-app.post("/password/reset/start", (req, res) => {
+app.post("/resetPassword/start", (req, res) => {
     let email = req.body.email;
     if (email == "") {
         email = null;
@@ -157,30 +159,32 @@ app.post("/password/reset/start", (req, res) => {
     let error = {
         error: true,
     };
-    console.log("/password/reset/start", req.body);
-    db.getUser(req.body.email)
+    console.log("/resetPassword/start", req.body);
+    db.getUser(email)
         .then((result) => {
-            console.log("result rows /password/reset/start:", result.rows);
+            console.log("result rows /resetPassword/start:", result.rows);
             if (result.rows.length == 0) {
                 res.json(error);
             } else {
+                const cryptoRandomString = require("crypto-random-string");
                 const secretCode = cryptoRandomString({
                     length: 6,
                 });
                 console.log(secretCode);
                 db.insertResetCode(email, secretCode)
                     .then(() => {
+                        console.log("insertResetCode is running");
                         sendEmail(
-                            userEmail,
+                            email,
                             "Your secret code",
                             `In order to reset your password, please enter your : ${secretCode}`
                         )
                             .then(() => {
-                                res.json();
+                                res.json("success");
                             })
                             .catch((err) => {
                                 console.log(
-                                    "error in sendEmail /password/reset/start:",
+                                    "error in sendEmail /resetPassword/start:",
                                     err
                                 );
                                 res.json(error);
@@ -188,7 +192,7 @@ app.post("/password/reset/start", (req, res) => {
                     })
                     .catch((err) => {
                         console.log(
-                            "error in inserResetCode /password/reset/start:",
+                            "error in inserResetCode /resetPassword/start:",
                             err
                         );
                         res.json(error);
@@ -196,12 +200,13 @@ app.post("/password/reset/start", (req, res) => {
             }
         })
         .catch((err) => {
-            console.log("error in getUser /password/reset/start:", err);
+            console.log("error in getUser /resetPassword/start:", err);
             res.json(error);
         });
 });
 
-app.post("/password/reset/verify", (req, res) => {
+app.post("/resetPassword/verify", (req, res) => {
+    console.log("resetPassword verify running");
     console.log(req.body);
     let email = req.body.email;
     if (email == "") {
@@ -218,20 +223,21 @@ app.post("/password/reset/verify", (req, res) => {
     let error = {
         error: true,
     };
-
     db.checkResetCode(email)
         .then((result) => {
-            console.log(result.rows);
+            console.log("email:", email);
+            console.log("result from checkResetCode:", result.rows);
+            console.log("resetCode", resetCode);
             if (resetCode == result.rows[0].code) {
-                hash(changedPassword)
+                bc.hash(changedPassword)
                     .then((hashedPassword) => {
                         db.updatePassword(email, hashedPassword)
                             .then(() => {
-                                res.json({ passwordUpdated: true });
+                                res.json();
                             })
                             .catch((err) => {
                                 console.log(
-                                    "error in updatePassword /password/reset/verify:",
+                                    "error in updatePassword /resetPassword/verify:",
                                     err
                                 );
                                 res.json(error);
@@ -239,7 +245,7 @@ app.post("/password/reset/verify", (req, res) => {
                     })
                     .catch((err) => {
                         console.log(
-                            "error in hash /password/reset/verify:",
+                            "error in hash /resetPassword/verify:",
                             err
                         );
                         res.json(error);
@@ -249,7 +255,7 @@ app.post("/password/reset/verify", (req, res) => {
             }
         })
         .catch((err) => {
-            console.log("error in checkResetCode /password/reset/verify:", err);
+            console.log("error in checkResetCode /resetPassword/verify:", err);
             res.json(error);
         });
 });
@@ -257,8 +263,6 @@ app.post("/password/reset/verify", (req, res) => {
 app.get("*", function (req, res) {
     if (!req.session.userId) {
         res.redirect("/welcome");
-    } else {
-        res.sendFile(__dirname + "/index.html");
     }
 });
 

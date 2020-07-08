@@ -2,6 +2,7 @@ import React from "react";
 import axios from "./axios";
 import ProfilePic from "./profilepic";
 import Uploader from "./uploader";
+import Profile from "./profile";
 
 export default class App extends React.Component {
     constructor() {
@@ -32,8 +33,8 @@ export default class App extends React.Component {
 
     setImage(newProfilePic) {
         this.setState({
-            profilePic: newProfilePic
-        })
+            profilePic: newProfilePic,
+        });
     }
 
     //rendering profile picture and passing props (first)
@@ -42,17 +43,20 @@ export default class App extends React.Component {
         return (
             <div>
                 <h1>App</h1>
-                <ProfilePic
+                <Profile />
+                {/* <ProfilePic
                     first={this.state.first}
                     last={this.state.last}
                     profilePic={this.state.profilePic}
                     toggleModal={this.toggleModal}
-                />
+                /> */}
                 <p onClick={() => this.toggleModal()}>
                     {" "}
                     click me to toggle the modal{" "}
                 </p>
-                {this.state.uploaderIsVisible && <Uploader setImage={this.setImage} />}
+                {this.state.uploaderIsVisible && (
+                    <Uploader setImage={this.setImage} />
+                )}
             </div>
         );
     }

@@ -8,6 +8,7 @@ DROP TABLE IF EXISTS users;
       password VARCHAR(255) NOT NULL,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
+      
 
 DROP TABLE IF EXISTS reset_codes;
 

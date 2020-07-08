@@ -6,7 +6,7 @@ export default class ResetPassword extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            resetEmail: "",
+            email: "",
             changedPassword: "",
             resetCode: "",
             passwordChangeSuccess: false,
@@ -17,7 +17,7 @@ export default class ResetPassword extends React.Component {
     handleChangeResetEmail(e) {
         console.log("handleChangeEmail e.target.value:", e.target.value);
         this.setState({
-            resetEmail: e.target.value,
+            email: e.target.value,
         });
         console.log("handleChangeEmail state:", this.state);
     }
@@ -44,13 +44,13 @@ export default class ResetPassword extends React.Component {
         });
         console.log("sendPasswordResetEmail running");
         let userInfo = {
-            email: self.state.resetEmail,
+            email: self.state.email,
         };
-        console.log(self.state.resetEmail);
+        console.log(self.state.email);
         axios
             .post("/resetPassword/start", userInfo)
             .then((response) => {
-                console.log(response);
+                console.log("response resetpassword/start:", response);
                 if (response.data.error) {
                     self.setState({
                         errorInResetPassword: true,
@@ -63,32 +63,34 @@ export default class ResetPassword extends React.Component {
                 }
             })
             .catch((err) => {
-                console.log("error in axios POST /password/reset/start :", err);
+                console.log("error in axios POST /resetPassword/start :", err);
             });
     }
     changePassword(e) {
+        console.log("changePassword running");
         e.preventDefault();
         let self = this;
         self.setState({
             errorInResetPassword: false,
         });
-        console.log("changePassword running");
         let userInfo = {
-            email: self.state.resetEmail,
-            changedPassword: self.state.changedPassword,
+            email: self.state.email,
             resetCode: self.state.resetCode,
+            changedPassword: self.state.changedPassword,
         };
+        console.log("userInfo", userInfo);
         axios
             .post("/resetPassword/verify", userInfo)
             .then((result) => {
-                console.log(result);
-                console.log("self.state /password/reset/verify:", self.state);
-                console.log(result.data.passwordUpdated);
-                if (result.data.passwordUpdated) {
+                console.log("resetPassword/verify result:", result); //PROBLEMMMMMMM : result is not correct
+                console.log("self.state /resetPassword/verify:", self.state);
+                console.log(result.data.changedPassword);
+                if (result.data.changedPassword) {
                     console.log("if result.data.passwordUpdated TRUE");
                     self.setState({
                         passwordChangeSuccess: true,
                     });
+
                     console.log(self.state);
                 } else {
                     self.setState({
@@ -97,10 +99,7 @@ export default class ResetPassword extends React.Component {
                 }
             })
             .catch((err) => {
-                console.log(
-                    "error in axios POST /password/reset/verify :",
-                    err
-                );
+                console.log("error in axios POST /resetPassword/verify :", err);
                 self.setState({
                     errorInResetPassword: true,
                 });
@@ -110,34 +109,32 @@ export default class ResetPassword extends React.Component {
         let self = this;
         console.log("getCurrentDisplay is running");
         if (!self.state.resetEmailSent) {
-            console.log("IF NOT RESET EMAIL SENT:", !self.state.resetEmailSent);
+            console.log(
+                "Getting display 1 (!self.state.resetEmailSent):",
+                !self.state.resetEmailSent
+            );
             return (
                 <div>
-                    <p>Please enter your e-mail :</p>
                     <form>
+                        <p>Please enter your e-mail :</p>
+
                         <input
                             type="email"
                             name="resetEmail"
                             value={self.state.resetEmail}
-                            placeholder="Reset E-mail"
+                            placeholder="E-mail"
                             onChange={(e) => self.handleChangeResetEmail(e)}
                         />
                         <input
                             type="submit"
-                            value="submit"
+                            value="SEND SECRET CODE"
                             onClick={(e) => self.sendPasswordResetEmail(e)}
                         />
                     </form>
                 </div>
             );
-        } else if (
-            !self.state.passwordChangeSuccess &&
-            self.state.resetEmailSent
-        ) {
-            console.log(
-                "IF NOT PASSWORD CHANGE SUCCESS AND RESET EMAIL SENT:",
-                self.state
-            );
+        } else if (self.state.resetEmailSent) {
+            console.log("Getting display 2 (self.state):", self.state);
             return (
                 <div>
                     <p>Please use secret code :</p>
@@ -166,7 +163,7 @@ export default class ResetPassword extends React.Component {
                 </div>
             );
         } else if (self.state.passwordChangeSuccess) {
-            console.log("PASSWORD CHANGE SUCCESS");
+            console.log("Getting display 3 (self.state):", self.state);
             return (
                 <div>
                     <Link to="/login">LOGIN NOW</Link>
@@ -175,7 +172,7 @@ export default class ResetPassword extends React.Component {
         }
     }
     render() {
-        console.log("Reset Password rendering");
+        console.log("rendering reset password");
         return (
             <div>
                 {this.state.errorInResetPassword ? (

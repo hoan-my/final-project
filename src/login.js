@@ -39,12 +39,12 @@ export default class Login extends React.Component {
                     self.setState({
                         LoginError: true,
                     });
-                    //location.replace("/"); //change here!!
+                    location.replace("/"); //change here!!
                 } else {
                     self.setState({
                         LoginError: false,
                     });
-                    location.replace("/");
+                    location.replace("/profile");
                 }
             })
             .catch((err) => {
@@ -52,6 +52,7 @@ export default class Login extends React.Component {
             });
     }
     render() {
+        console.log("rendering login");
         return (
             <div>
                 {this.state.LoginError ? (
