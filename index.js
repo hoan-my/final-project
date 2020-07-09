@@ -57,9 +57,7 @@ app.use(
 app.use(csurf());
 
 app.use(function (req, res, next) {
-    res.setHeader("x-frame-options", "deny");
-    res.locals.csrfToken = req.csrfToken();
-    res.locals.user = req.session.user;
+    res.cookie("mytoken", req.csrfToken());
     next();
 });
 
@@ -79,6 +77,7 @@ if (process.env.NODE_ENV != "production") {
 } else {
     app.use("/bundle.js", (req, res) => res.sendFile(`${__dirname}/bundle.js`));
 }
+////////////////////////////////////
 
 app.get("/welcome", (req, res) => {
     if (req.session.userId) {
@@ -90,51 +89,20 @@ app.get("/welcome", (req, res) => {
     }
 });
 
-app.get("/profile", (req, res) => {
-    db.getUser(req.session.userId)
-        .then((result) => {
-            console.log("result GET /profile: ", result);
-            res.json({
-                first: result.rows[0].first,
-                last: result.rows[0].last,
-                profilePic: result.rows[0].imageUrl,
-            });
-        })
-        .catch((err) => {
-            res.sendStatus(500);
-            console.log("Error in GET/profile: ", err);
-        });
-});
-
 app.post("/register", (req, res) => {
     console.log(req.body);
-    let password = req.body.password;
-    if (password == "") {
-        password = null;
-    }
-    let first = req.body.first;
-    if (first == "") {
-        first = null;
-    }
-    let last = req.body.last;
-    if (last == "") {
-        last = null;
-    }
-    let email = req.body.email;
-    if (email == "") {
-        email = null;
-    }
-    let error = {
-        error: true,
-    };
-
-    bc.hash(password)
+    bc.hash(req.body.password)
         .then((hashedPassword) => {
-            db.insertUser(first, last, email, hashedPassword)
+            db.insertUser(
+                req.body.first,
+                req.body.last,
+                req.body.email,
+                hashedPassword
+            )
                 .then((result) => {
                     console.log("result in insertUser:", result);
-                    req.session.userId = result.rows[0].id;
-                    res.json(result.rows[0);
+                    req.session.userId = result.rows[0].id; //HERE
+                    res.json(result.rows[0]);
                 })
                 .catch((err) => {
                     console.log("error in insertUser /register:", err);
@@ -150,18 +118,7 @@ app.post("/register", (req, res) => {
 //csurf and token
 app.post("/login", (req, res) => {
     console.log(req.body);
-    let password = req.body.password;
-    if (password == "") {
-        password = null;
-    }
-    let email = req.body.email;
-    if (email == "") {
-        email = null;
-    }
-    let error = {
-        error: true,
-    };
-    db.getUser(email, password)
+    db.getUser(req.body.email)
         .then((result) => {
             console.log("result in getUser:", result);
             const user = result.rows[0];
@@ -176,10 +133,9 @@ app.post("/login", (req, res) => {
                     if (match === true) {
                         const { id, first, last } = user;
                         req.session.user = { id, first, last };
-
-                        res.redirect("/"); // change path here
+                        res.json("Login is successful");
                     } else {
-                        res.sendStatus(401);
+                        res.json("Login info is incorrect");
                     }
                 })
                 .catch((err) => {
@@ -194,52 +150,38 @@ app.post("/login", (req, res) => {
 });
 
 app.post("/resetPassword/start", (req, res) => {
-    let email = req.body.email;
-    if (email == "") {
-        email = null;
-    }
-    let error = {
-        error: true,
-    };
-    console.log("/resetPassword/start", req.body);
-    db.getUser(email)
+    db.getUser(req.body.email)
         .then((result) => {
-            console.log("result rows /resetPassword/start:", result.rows);
-            const cryptoRandomString = require("crypto-random-string");
-            const secretCode = cryptoRandomString({
-                length: 6,
-            });
+            console.log("result in /resetPassword/start:", result.rows);
+            if (result.rows.length > 0) {
+                const cryptoRandomString = require("crypto-random-string");
+                const secretCode = cryptoRandomString({
+                    length: 6,
+                });
+            }
             console.log(secretCode);
-            db.insertResetCode(email, secretCode)
-                .then(() => {
+            db.insertResetCode(req.body.email, secretCode)
+                .then((result) => {
                     console.log("insertResetCode is running");
                     sendEmail(
-                        email,
+                        req.body.email,
                         "Your secret code",
                         `In order to reset your password, please enter your : ${secretCode}`
                     )
-                        .then(() => {
-                            res.json("success");
+                        .then((result) => {
+                            res.json("E-mail is sent");
                         })
                         .catch((err) => {
-                            console.log(
-                                "error in sendEmail /resetPassword/start:",
-                                err
-                            );
-                            res.json(error);
+                            console.log("error in sendEmail", err);
                         });
                 })
                 .catch((err) => {
-                    console.log(
-                        "error in inserResetCode /resetPassword/start:",
-                        err
-                    );
-                    res.json(error);
+                    console.log("error in inserResetCode", err);
                 });
         })
         .catch((err) => {
             console.log("error in getUser /resetPassword/start:", err);
-            res.json(error);
+            res.json({ error: true });
         });
 });
 
@@ -271,7 +213,7 @@ app.post("/resetPassword/verify", (req, res) => {
                     .then((hashedPassword) => {
                         db.updatePassword(email, hashedPassword)
                             .then(() => {
-                                res.json();
+                                res.json("update successsful");
                             })
                             .catch((err) => {
                                 console.log(
@@ -307,6 +249,7 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
 
     if (filename) {
         return db.updateImage(req.session.userId, imageUrl).then((result) => {
+            console.log("result:", result);
             res.json(result.rows[0]);
         });
     } else {
@@ -316,9 +259,24 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
     }
 });
 
+app.get("/user", (req, res) => {
+    console.log(req.session);
+    db.getUserImage(req.session.userId)
+        .then((result) => {
+            console.log("result GET /user: ", result);
+            res.json(result.rows[0]);
+        })
+        .catch((err) => {
+            res.sendStatus(500);
+            console.log("Error in GET/user: ", err);
+        });
+});
+
 app.get("*", function (req, res) {
     if (!req.session.userId) {
         res.redirect("/welcome");
+    } else {
+        res.sendFile(__dirname + "/index.html");
     }
 });
 

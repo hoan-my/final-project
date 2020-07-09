@@ -8,12 +8,12 @@ export default function ProfilePic(props) {
     return (
         <div>
             <p>
-                {props.firstname} {props.lastname}
+                {props.first} {props.last}
             </p>
             <img
                 className="profilePic"
-                src={props.profilePic}
-                onClick={props.toggleModal}
+                src={props.profilePic || "profilePic.png"}
+                onClick={() => props.toggleModal()}
             />
         </div>
     );

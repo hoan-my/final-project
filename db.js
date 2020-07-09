@@ -24,6 +24,14 @@ exports.getUser = (email) => {
     );
 };
 
+exports.getUserImage = (id) => {
+    return db.query(
+        `SELECT * FROM users
+  WHERE id = $1`,
+        [id]
+    );
+};
+
 exports.insertResetCode = (email, code) => {
     return db.query(
         `

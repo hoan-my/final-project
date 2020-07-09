@@ -9,7 +9,7 @@ export default class Register extends React.Component {
             last: "",
             email: "",
             password: "",
-            RegistrationError: false,
+            error: false,
         };
     }
     handleChange(e) {
@@ -24,29 +24,20 @@ export default class Register extends React.Component {
     }
     register(e) {
         e.preventDefault();
-        let self = this;
-
-        let userInfo = {
-            first: self.state.first,
-            last: self.state.last,
-            email: self.state.email,
-            password: self.state.password,
-        };
-
         console.log("register function running");
         axios
-            .post("/register", userInfo)
+            .post("/register", this.state)
             .then((response) => {
                 console.log("response /register:", response);
                 if (response.data.error) {
-                    self.setState({
-                        RegistrationError: true,
+                    this.setState({
+                        error: true,
                     });
-                    location.replace("/"); //change here!!
                 } else {
-                    self.setState({
-                        RegistrationError: false,
+                    this.setState({
+                        error: false,
                     });
+                    location.replace("/");
                 }
             })
             .catch((err) => {

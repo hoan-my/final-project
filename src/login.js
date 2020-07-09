@@ -8,7 +8,7 @@ export default class Login extends React.Component {
         this.state = {
             email: "",
             password: "",
-            LoginError: false,
+            error: false,
         };
     }
     handleChange(e) {
@@ -23,26 +23,19 @@ export default class Login extends React.Component {
     }
     login(e) {
         e.preventDefault();
-        let self = this;
-
-        let userInfo = {
-            email: self.state.email,
-            password: self.state.password,
-        };
 
         console.log("login function running");
         axios
-            .post("/login", userInfo)
+            .post("/login", this.state)
             .then((response) => {
                 console.log("response /login:", response);
                 if (response.data.error) {
                     self.setState({
-                        LoginError: true,
+                        error: true,
                     });
-                    location.replace("/"); //change here!!
                 } else {
                     self.setState({
-                        LoginError: false,
+                        error: false,
                     });
                     location.replace("/");
                 }

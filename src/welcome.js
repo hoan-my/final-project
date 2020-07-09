@@ -14,7 +14,7 @@ export default function Welcome() {
                 <React.Fragment>
                     <Route exact path="/" component={Register} />
                     <Route path="/login" component={Login} />
-                    <Route path="/resetpassword" component={ResetPassword} />
+                    <Route path="/resetPassword" component={ResetPassword} />
                 </React.Fragment>
             </HashRouter>
             <footer>©Hoan-My 2020</footer>
