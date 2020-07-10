@@ -14,6 +14,7 @@ export default class App extends React.Component {
         this.closeModal = this.closeModal.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
         this.setImage = this.setImage.bind(this);
+        this.setBio = this.setBio.bind(this);
     }
 
     //lifecycle methods from React (like mounted version)
@@ -29,6 +30,7 @@ export default class App extends React.Component {
                 first: response.data.first,
                 last: response.data.last,
                 profilePic: response.data.imageurl,
+                bio: response.data.bio,
             });
         });
     }
@@ -45,6 +47,12 @@ export default class App extends React.Component {
             profilePic: newProfilePic,
         });
     }
+
+    setBio(newBio) {
+        this.setState({
+            bio: newBio,
+        });
+    } //
 
     closeModal() {
         console.log("closeModal is running");
@@ -75,6 +83,8 @@ export default class App extends React.Component {
                     profilePic={this.state.profilePic}
                     toggleModal={() => this.toggleModal()}
                     setImage={() => this.setImage()}
+                    bio={this.state.bio}
+                    setBio={() => this.this.setBio()}
                 />
 
                 {/* <ProfilePic

@@ -7,6 +7,7 @@ export default class Uploader extends React.Component {
         this.state = {
             file: null,
             error: false,
+            uploaderIsVisible: false,
         };
     }
 
@@ -37,6 +38,13 @@ export default class Uploader extends React.Component {
             });
     }
 
+    closeModal(e) {
+        e.preventDefault();
+        this.setState({
+            UploaderIsVisible: false,
+        });
+    }
+
     render() {
         return (
             <div className="modal">
@@ -48,6 +56,7 @@ export default class Uploader extends React.Component {
                     onChange={(e) => this.handleChange(e)}
                 />
                 <button onClick={(e) => this.uploadImage(e)}>SUBMIT</button>
+                <button onClick={(e) => this.closeModal(e)}>X</button>
             </div>
         );
     }

@@ -261,7 +261,7 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
 
 app.get("/user", (req, res) => {
     console.log(req.session);
-    db.getUserImage(req.session.userId)
+    db.getUser(req.session.userId)
         .then((result) => {
             console.log("result GET /user: ", result);
             res.json(result.rows[0]);
@@ -269,6 +269,22 @@ app.get("/user", (req, res) => {
         .catch((err) => {
             res.sendStatus(500);
             console.log("Error in GET/user: ", err);
+        });
+});
+
+app.post("/bio", (req, res) => {
+    console.log("req.body in BIO", req.body);
+    db.updateBio(req.session.userId, req.body.bio)
+        .then((results) => {
+            console.log("result POST /bio: ", results);
+            if (results.rows[0]) {
+                res.json(results.rows[0]);
+            } else {
+                res.sendStatus(500);
+            }
+        })
+        .catch((err) => {
+            console.log("Error POST /bio", err);
         });
 });
 

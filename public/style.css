@@ -168,6 +168,7 @@ button:hover {
     width: 300px;
     height: 300px;
     top: 400px;
+    left: 100px;
     position: fixed;
 }
 
@@ -214,4 +215,9 @@ button:hover {
     position: relative;
     top: -20px;
     height: 600px;
+}
+
+.bio {
+    position: fixed;
+    left: 50%;
 }

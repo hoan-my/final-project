@@ -16,15 +16,7 @@ exports.insertUser = (first, last, email, password) => {
     );
 };
 
-exports.getUser = (email) => {
-    return db.query(
-        `SELECT * FROM users 
-        WHERE email = $1`,
-        [email]
-    );
-};
-
-exports.getUserImage = (id) => {
+exports.getUser = (id) => {
     return db.query(
         `SELECT * FROM users
   WHERE id = $1`,
@@ -70,5 +62,17 @@ exports.updateImage = (id, imageUrl) => {
         RETURNING imageUrl
         `,
         [id, imageUrl]
+    );
+};
+
+exports.updateBio = (id, bio) => {
+    return db.query(
+        `
+        UPDATE users 
+        SET bio=$2
+        WHERE id=$1
+        RETURNING bio
+        `,
+        [id, bio]
     );
 };
