@@ -28,7 +28,7 @@ export default class App extends React.Component {
             this.setState({
                 first: response.data.first,
                 last: response.data.last,
-                profilePic: response.data.imageUrl,
+                profilePic: response.data.imageurl,
             });
         });
     }
@@ -49,7 +49,7 @@ export default class App extends React.Component {
     closeModal() {
         console.log("closeModal is running");
         this.setState({
-            uploaderIsVisible: true,
+            uploaderIsVisible: false,
         });
     }
     //rendering profile picture and passing props (first)
@@ -57,9 +57,18 @@ export default class App extends React.Component {
         console.log("this.state:", this.state);
         return (
             <div className="App">
-                <h1>App</h1>
-                <h1>WOMEN OF COLORS IN TECH</h1>
-                <img src="WOC.png" />
+                <h4>
+                    <img src="WOC.png" width="30px" height="30px" /> WOMEN OF
+                    COLORS IN TECH
+                </h4>
+                <div className="headerPic">
+                    <ProfilePic
+                        profilePic={this.state.profilePic}
+                        toggleModal={() => this.toggleModal()}
+                        setImage={() => this.setImage()}
+                    />
+                </div>
+
                 <Profile
                     first={this.state.first}
                     last={this.state.last}
@@ -67,6 +76,7 @@ export default class App extends React.Component {
                     toggleModal={() => this.toggleModal()}
                     setImage={() => this.setImage()}
                 />
+
                 {/* <ProfilePic
                     first={this.state.first}
                     last={this.state.last}
@@ -84,6 +94,7 @@ export default class App extends React.Component {
                         closeModal={() => this.closeModal()}
                     />
                 )}
+                <footer>©Hoan-My 2020</footer>
             </div>
         );
     }

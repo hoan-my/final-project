@@ -5,14 +5,14 @@ export default class Uploader extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            imageUrl: null,
+            file: null,
             error: false,
         };
     }
 
     handleChange(e) {
         this.setState({
-            imageUrl: e.target.files[0],
+            file: e.target.files[0],
         });
     }
 
@@ -23,7 +23,7 @@ export default class Uploader extends React.Component {
     uploadImage(e) {
         e.preventDefault();
         var formData = new FormData();
-        formData.append("imageUrl", this.state.imageUrl);
+        formData.append("file", this.state.file);
         axios
             .post("/upload", formData)
             .then((result) => {
@@ -40,18 +40,14 @@ export default class Uploader extends React.Component {
     render() {
         return (
             <div className="modal">
-                <p id="close-btn" onClick={this.props.closeModal}>
-                    X
-                </p>
-                <form>
-                    <input
-                        type="file"
-                        name="file"
-                        accept="image/*"
-                        onChange={(e) => this.handleChange(e)}
-                    />
-                    <button onClick={(e) => this.uploadImage(e)}>Update</button>
-                </form>
+                <h2>UPDATE PROFILE PICTURE</h2>
+                <input
+                    type="file"
+                    name="file"
+                    accept="image/*"
+                    onChange={(e) => this.handleChange(e)}
+                />
+                <button onClick={(e) => this.uploadImage(e)}>SUBMIT</button>
             </div>
         );
     }

@@ -153,31 +153,31 @@ app.post("/resetPassword/start", (req, res) => {
     db.getUser(req.body.email)
         .then((result) => {
             console.log("result in /resetPassword/start:", result.rows);
-            if (result.rows.length > 0) {
-                const cryptoRandomString = require("crypto-random-string");
+            const registeredEmail = result.rows[0].email;
+            if (registeredEmail == req.body.email) {
                 const secretCode = cryptoRandomString({
                     length: 6,
                 });
+                console.log(secretCode);
+                db.insertResetCode(req.body.email, secretCode)
+                    .then((result) => {
+                        console.log("insertResetCode is running");
+                        sendEmail(
+                            req.body.email,
+                            "Your secret code",
+                            `In order to reset your password, please enter your : ${secretCode}`
+                        )
+                            .then((result) => {
+                                res.json("E-mail is sent");
+                            })
+                            .catch((err) => {
+                                console.log("error in sendEmail", err);
+                            });
+                    })
+                    .catch((err) => {
+                        console.log("error in inserResetCode", err);
+                    });
             }
-            console.log(secretCode);
-            db.insertResetCode(req.body.email, secretCode)
-                .then((result) => {
-                    console.log("insertResetCode is running");
-                    sendEmail(
-                        req.body.email,
-                        "Your secret code",
-                        `In order to reset your password, please enter your : ${secretCode}`
-                    )
-                        .then((result) => {
-                            res.json("E-mail is sent");
-                        })
-                        .catch((err) => {
-                            console.log("error in sendEmail", err);
-                        });
-                })
-                .catch((err) => {
-                    console.log("error in inserResetCode", err);
-                });
         })
         .catch((err) => {
             console.log("error in getUser /resetPassword/start:", err);

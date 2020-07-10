@@ -22,8 +22,14 @@ body {
     -webkit-border-radius: 10px 10px 10px 10px;
 }
 
+.row2 {
+    display: flex;
+    margin-top: 50px;
+}
+
 img {
     border-radius: 10px 10px 10px 10px;
+    cursor: pointer;
 }
 
 .column {
@@ -45,6 +51,22 @@ h2 {
 h3 {
     color: darkblue;
     font-size: 40px;
+}
+
+h4 {
+    background-image: linear-gradient(to left, yellow, pink);
+    -webkit-background-clip: text;
+    color: transparent;
+    font-size: 40px;
+    text-align: left;
+}
+
+h5 {
+    position: relative;
+    top: -85px;
+    color: white;
+    font-size: 50px;
+    background-color: lightcoral;
 }
 
 .content {
@@ -104,9 +126,10 @@ form {
 }
 
 input {
-    color: darkblue;
+    color: black;
     background-color: lightgrey;
     font-size: 25px;
+    padding: 10px 10px;
 }
 
 input[type="submit"] {
@@ -128,4 +151,67 @@ Link {
 
 Link:hover {
     background-color: rgb(255, 255, 117);
+}
+
+button {
+    color: white;
+    /* border-radius: 25px; */
+    background-image: linear-gradient(to right, orange, yellow);
+    padding: 10px 10px;
+}
+
+button:hover {
+    background-image: linear-gradient(to left, lightcoral, pink);
+}
+
+.ProfilePic {
+    width: 300px;
+    height: 300px;
+    top: 400px;
+    position: fixed;
+}
+
+.headerPic {
+    width: 6%;
+    height: 6%;
+    position: fixed;
+    top: 4%;
+    right: 5%;
+    z-index: 1;
+}
+
+.edit {
+    width: 8%;
+    height: 18%;
+    padding: 5px 5px;
+    position: relative;
+}
+
+.modal {
+    background-color: lightcoral;
+    padding: 50px 50px;
+    -webkit-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    border-radius: 10px 10px 10px 10px;
+    -moz-border-radius: 10px 10px 10px 10px;
+    -webkit-border-radius: 10px 10px 10px 10px;
+    border: 0px solid #000000;
+    padding: 10px 10px;
+    position: fixed;
+    top: 35%;
+}
+
+.profile {
+    background-color: lightgrey;
+    -webkit-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+    border-radius: 10px 10px 10px 10px;
+    -moz-border-radius: 10px 10px 10px 10px;
+    -webkit-border-radius: 10px 10px 10px 10px;
+    border: 0px solid #000000;
+    position: relative;
+    top: -20px;
+    height: 600px;
 }
