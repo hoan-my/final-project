@@ -34,10 +34,10 @@ export default function FindPeople(props) {
 
     if (search == "") {
         return (
-            <div>
+            <div className="FindPeople">
                 <div className="find-people">
                     <h1>Find People</h1>
-                    <h3>New joiners</h3>
+                    <h3>Have you met our new joiners ?</h3>
                 </div>
                 <div className="users-container">
                     {users.map((each, index) => (
@@ -63,7 +63,7 @@ export default function FindPeople(props) {
         );
     } else {
         return (
-            <div>
+            <div className="FindPeople">
                 <div className="find-people">
                     <h1>Find People</h1>
                     {(results.length > 0 && <h3>Results for "{search}"</h3>) ||

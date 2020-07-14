@@ -4,6 +4,7 @@
     max-width: 100%;
     max-height: 100%;
     font-size: 25px;
+    text-decoration: none;
 }
 
 body {
@@ -135,33 +136,44 @@ input {
 input[type="submit"] {
     color: white;
     /* border-radius: 25px; */
-    background-image: linear-gradient(to right, orange, yellow);
+    background-image: linear-gradient(to right, lightcoral, lightcoral);
     padding: 10px 10px;
 }
 
 input[type="submit"]:hover {
-    background-image: linear-gradient(to left, lightcoral, pink);
+    background-image: linear-gradient(to left, yellow, yellow);
+    color: darkblue;
 }
 
 Link {
-    background-color: pink;
-    color: white;
     text-decoration: none;
+    color: white;
+}
+
+a {
+    color: white;
+}
+a:hover {
+    color: darkblue;
 }
 
 Link:hover {
     background-color: rgb(255, 255, 117);
+    color: darkblue;
 }
 
 button {
     color: white;
     /* border-radius: 25px; */
-    background-image: linear-gradient(to right, orange, yellow);
+    background-image: linear-gradient(to right, lightcoral, lightcoral);
     padding: 10px 10px;
+    text-decoration: none;
+    border-radius: 50px 50px;
 }
 
 button:hover {
-    background-image: linear-gradient(to left, lightcoral, pink);
+    background-image: linear-gradient(to left, yellow, yellow);
+    color: darkblue;
 }
 
 .ProfilePic {
@@ -178,7 +190,7 @@ button:hover {
     position: fixed;
     top: 4%;
     right: 5%;
-    z-index: 1;
+    z-index: -1;
 }
 
 .edit {
@@ -200,7 +212,7 @@ button:hover {
     border: 0px solid #000000;
     padding: 10px 10px;
     position: fixed;
-    top: 35%;
+    top: 45%;
 }
 
 .profile {
@@ -220,4 +232,47 @@ button:hover {
 .bio {
     position: absolute;
     left: 50%;
+}
+
+.close {
+    position: fixed;
+    margin-top: 5px;
+    margin-right: 5px;
+}
+
+.OtherProfile {
+    background-color: lightgrey;
+    position: fixed;
+    overflow: auto;
+    left: 8px;
+    top: 250px;
+    width: 1424px;
+    height: 480px;
+    z-index: 99999;
+}
+
+.FindPeople {
+    background-image: url(img2.jpg);
+    background-color: lightgrey;
+    position: fixed;
+    overflow: auto;
+    z-index: 9999999;
+    height: 550px;
+    width: 1424px;
+    top: 160px;
+}
+
+.find-people,
+.name {
+    background-color: rgba(255, 255, 255, 0.849);
+    position: relative;
+    left: 40%;
+    width: 20%;
+    color: darkblue;
+}
+
+.search {
+    position: fixed;
+    top: 50px;
+    right: 10px;
 }

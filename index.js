@@ -332,7 +332,7 @@ app.post("/bio", (req, res) => {
 });
 
 app.get("/get-initial-status/:id", (req, res) => {
-    console.log("/get-initial-status/:id req.body :", req.params.id);
+    console.log("/get-initial-status/:id req.params.id :", req);
     db.getInitialStatus(req.session.userId, req.params.id.slice(1))
         .then((result) => {
             console.log("/get-initial-status/:id result.rows :", result.rows);
@@ -344,7 +344,7 @@ app.get("/get-initial-status/:id", (req, res) => {
         })
         .catch((err) => {
             console.log("error /get-initial-status/:id", err);
-            res.json(error);
+            res.json(err);
         });
 });
 
@@ -357,7 +357,7 @@ app.post("/make-friend-request/:id", (req, res) => {
         })
         .catch((err) => {
             console.log("error /make-friend-request/:id :", err);
-            res.json(error);
+            res.json(err);
         });
 });
 
@@ -383,7 +383,7 @@ app.post("/end-friendship/:id", (req, res) => {
         })
         .catch((err) => {
             console.log("error /end-friendship/:id :", err);
-            res.json(error);
+            res.json(err);
         });
 });
 

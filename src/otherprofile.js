@@ -30,7 +30,7 @@ export default class OtherProfile extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className="OtherProfile">
                 <h1>
                     {this.state.firs} {this.state.last}
                 </h1>

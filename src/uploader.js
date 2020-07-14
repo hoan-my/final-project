@@ -48,7 +48,11 @@ export default class Uploader extends React.Component {
     render() {
         return (
             <div className="modal">
+                <p className="close" onClick={(e) => this.closeModal(e)}>
+                    X
+                </p>
                 <h2>UPDATE PROFILE PICTURE</h2>
+
                 <input
                     type="file"
                     name="file"
@@ -56,7 +60,6 @@ export default class Uploader extends React.Component {
                     onChange={(e) => this.handleChange(e)}
                 />
                 <button onClick={(e) => this.uploadImage(e)}>SUBMIT</button>
-                <button onClick={(e) => this.closeModal(e)}>X</button>
             </div>
         );
     }

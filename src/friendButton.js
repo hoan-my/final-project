@@ -14,7 +14,8 @@ export default function FriendButton(props) {
                 .post(`/make-friend-request/:${friendId}`)
                 .then((result) => {
                     console.log("Result POST /make-friend-request/: ", result);
-                    setFriendStatus("SEND FRIEND REQUEST");
+                    setButtonText("FRIEND REQUEST PENDING");
+                    setFriendStatus("pending");
                 })
                 .catch((err) => {
                     console.log("error in handleClick", err);
@@ -23,8 +24,8 @@ export default function FriendButton(props) {
             axios
                 .post(`/accept-friend-request/:${friendId}`)
                 .then((result) => {
-                    setFriendStatus("accepted");
                     setButtonText("ACCEPT FRIEND REQUEST");
+                    setFriendStatus("accepted");
                 })
                 .catch((err) => {
                     console.log("error in handleClick", err);
@@ -59,17 +60,11 @@ export default function FriendButton(props) {
                 ) {
                     setButtonText("PENDING FRIEND REQUEST");
                     setFriendStatus("pending");
-                } else if (
-                    result.data.receiver_id == friendId &&
-                    !result.data.accepted
-                ) {
-                    setButtonText("SEND FRIEND REQUEST");
-                    setFriendStatus("pending");
                 } else if (result.data.accepted) {
                     setButtonText("ACCEPT FRIEND REQUEST");
                     setFriendStatus("accepted");
                 } else if (result.data.friendStatus == null) {
-                    setButtonText("CANCEL FRIEND REQUEST");
+                    setButtonText("SEND FRIEND REQUEST");
                 }
             })
             .catch((err) => {

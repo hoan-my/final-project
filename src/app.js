@@ -85,15 +85,12 @@ export default class App extends React.Component {
                         path="/"
                         render={() => (
                             <div>
-                                <Link to="/find" className="find">
-                                    Meet other people
-                                </Link>
                                 <Profile
                                     id={this.state.id}
                                     first={this.state.first}
                                     last={this.state.last}
                                     profilePic={this.state.profilePic}
-                                    openModal={this.openModal}
+                                    toggleModal={() => this.toggleModal()}
                                     bio={this.state.bio}
                                     setBio={this.setBio}
                                 />
@@ -106,8 +103,7 @@ export default class App extends React.Component {
                             closeModal={() => this.closeModal()}
                         />
                     )}
-                    <Route path="/user/:id" component={OtherProfile} />
-                    <Route exact path="/find" component={FindPeople} />
+
                     <footer>©Hoan-My 2020</footer>
                 </div>
             </BrowserRouter>
