@@ -37,7 +37,7 @@ export default function FindPeople(props) {
             <div>
                 <div className="find-people">
                     <h1>Find People</h1>
-                    <h3>Check out who just joined</h3>
+                    <h3>New joiners</h3>
                 </div>
                 <div className="users-container">
                     {users.map((each, index) => (
@@ -46,16 +46,13 @@ export default function FindPeople(props) {
                                 <p className="name">
                                     {each.first} {each.last}
                                 </p>
-                                <img
-                                    src={each.imageUrl || "/profilePic.png"}
-                                    className="res-avatar"
-                                />
+                                <img src={each.imageUrl || "/profilePic.png"} />
                             </div>
                         </Link>
                     ))}
                 </div>
                 <div className="search">
-                    <h3>Are you looking for someone in particular?</h3>
+                    <h3>Looking for someone?</h3>
                     <input
                         type="text"
                         placeholder="Search for Users"
@@ -69,12 +66,10 @@ export default function FindPeople(props) {
             <div>
                 <div className="find-people">
                     <h1>Find People</h1>
-                    {(results.length > 0 && (
-                        <h3>Your search results for "{search}"</h3>
-                    )) ||
+                    {(results.length > 0 && <h3>Results for "{search}"</h3>) ||
                         (!results.length && (
                             <h3 className="no-results">
-                                No matching results for "{search}"
+                                No results for "{search}"
                             </h3>
                         ))}
                 </div>
@@ -95,7 +90,7 @@ export default function FindPeople(props) {
                     ))}
 
                 <div className="search">
-                    <h3>Are you looking for someone in particular?</h3>
+                    <h3>Looking for someone?</h3>
                     <input
                         type="text"
                         placeholder="Search for Users"

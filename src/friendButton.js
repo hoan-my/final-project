@@ -3,7 +3,7 @@ import axios from "./axios";
 
 export default function FriendButton(props) {
     const [friendId, setFriendId] = useState(props.friendId);
-    const [buttonText, setButtonText] = useState("Arkadas butonu");
+    const [buttonText, setButtonText] = useState("ADD FRIEND");
     const [friendStatus, setFriendStatus] = useState(null);
 
     const handleClick = (e) => {
