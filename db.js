@@ -24,6 +24,14 @@ exports.getUser = (id) => {
     );
 };
 
+exports.getUserLogin = (email) => {
+    return db.query(
+        `SELECT * FROM users
+  WHERE email = $1`,
+        [email]
+    );
+};
+
 exports.insertResetCode = (email, code) => {
     return db.query(
         `
@@ -74,5 +82,66 @@ exports.updateBio = (id, bio) => {
         RETURNING bio
         `,
         [id, bio]
+    );
+};
+
+exports.recentUsers = () => {
+    return db.query(
+        `
+        SELECT * FROM users ORDER BY id DESC LIMIT 3
+        `
+    );
+};
+
+exports.findUsers = (val) => {
+    return db.query(
+        `
+        SELECT * FROM users 
+        WHERE first ILIKE $1
+        OR last ILIKE $1;
+        `,
+        [val + "%"]
+    );
+};
+
+exports.getInitialStatus = (myId, otherId) => {
+    return db.query(
+        `
+           SELECT * FROM friendships
+           WHERE (receiver_id = $1 AND sender_id = $2)
+           OR (receiver_id = $2 AND sender_id = $1);
+           `,
+        [myId, otherId]
+    );
+};
+
+exports.requestFriend = (myId, otherId) => {
+    return db.query(
+        `
+        INSERT INTO friendships (sender_id, receiver_id ) VALUES ($1, $2)
+        `,
+        [myId, otherId]
+    );
+};
+
+exports.acceptFriend = (myId, otherId) => {
+    return db.query(
+        `
+        UPDATE friendships SET accepted= 'true'
+        WHERE receiver_id = $1 AND sender_id =$2 
+        RETURNING *
+        `,
+        [myId, otherId]
+    );
+};
+
+exports.deleteFriend = (myId, otherId) => {
+    return db.query(
+        `
+        DELETE FROM friendships 
+        WHERE (receiver_id = $1 AND sender_id = $2)
+        OR (receiver_id = $2 AND sender_id = $1);
+        `,
+        [myId, otherId]
     );
 };

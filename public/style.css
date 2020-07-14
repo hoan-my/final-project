@@ -167,9 +167,9 @@ button:hover {
 .ProfilePic {
     width: 300px;
     height: 300px;
-    top: 400px;
+    top: 250px;
     left: 100px;
-    position: fixed;
+    position: absolute;
 }
 
 .headerPic {
@@ -218,6 +218,6 @@ button:hover {
 }
 
 .bio {
-    position: fixed;
+    position: absolute;
     left: 50%;
 }

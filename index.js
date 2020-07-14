@@ -118,9 +118,9 @@ app.post("/register", (req, res) => {
 //csurf and token
 app.post("/login", (req, res) => {
     console.log(req.body);
-    db.getUser(req.body.email)
+    db.getUserLogin(req.body.email)
         .then((result) => {
-            console.log("result in getUser:", result);
+            console.log("result in getUserLogin:", result);
             const user = result.rows[0];
             if (!user) {
                 res.render("login", {
@@ -128,7 +128,7 @@ app.post("/login", (req, res) => {
                 });
             }
             const storedPassword = user.password;
-            bc.compare(password, storedPassword)
+            bc.compare(req.body.password, storedPassword)
                 .then((match) => {
                     if (match === true) {
                         const { id, first, last } = user;
@@ -139,7 +139,7 @@ app.post("/login", (req, res) => {
                     }
                 })
                 .catch((err) => {
-                    console.log("error in getUser POST/login:", err);
+                    console.log("error in getUserLogin POST/login:", err);
                     res.json(error);
                 });
         })
@@ -272,6 +272,49 @@ app.get("/user", (req, res) => {
         });
 });
 
+app.get("/user/:id.json", (req, res) => {
+    if (req.session.userId == req.params.id) {
+        res.json({ match: true });
+    }
+    db.getUser(req.params.id)
+        .then((result) => {
+            console.log("result GET /user/id :", result);
+            res.json({
+                first: result.rows[0].first,
+                last: result.rows[0].last,
+                profilePic: result.rows[0].imageUrl,
+                bio: result.rows[0].bio,
+                id: result.rows[0].id,
+            });
+        })
+        .catch((err) => {
+            res.sendStatus(500);
+            console.log("Error GET /user/id :", err);
+        });
+});
+
+app.get("/users", (req, res) => {
+    db.recentUsers()
+        .then((result) => {
+            console.log("result GET/users: ", result.rows);
+            res.json(result.rows);
+        })
+        .catch((err) => {
+            console.log("error GET/users : ", err);
+        });
+});
+
+app.get("/results/:search.json", (req, res) => {
+    db.findUsers(req.params.search)
+        .then((result) => {
+            console.log("result GET /results/search", result.rows);
+            res.json(result.rows);
+        })
+        .catch((err) => {
+            console.log("Error GET /results/search", err);
+        });
+});
+
 app.post("/bio", (req, res) => {
     console.log("req.body in BIO", req.body);
     db.updateBio(req.session.userId, req.body.bio)
@@ -285,6 +328,62 @@ app.post("/bio", (req, res) => {
         })
         .catch((err) => {
             console.log("Error POST /bio", err);
+        });
+});
+
+app.get("/get-initial-status/:id", (req, res) => {
+    console.log("/get-initial-status/:id req.body :", req.params.id);
+    db.getInitialStatus(req.session.userId, req.params.id.slice(1))
+        .then((result) => {
+            console.log("/get-initial-status/:id result.rows :", result.rows);
+            if (result.rows.length == 0) {
+                res.json({ friendStatus: null });
+            } else {
+                res.json(result.rows[0]);
+            }
+        })
+        .catch((err) => {
+            console.log("error /get-initial-status/:id", err);
+            res.json(error);
+        });
+});
+
+app.post("/make-friend-request/:id", (req, res) => {
+    console.log("/make-friend-request/:id :", req.params.id);
+    db.requestFriend(req.session.userId, req.params.id.slice(1))
+        .then((result) => {
+            console.log("/make-friend-request/:id :", result.rows);
+            res.json();
+        })
+        .catch((err) => {
+            console.log("error /make-friend-request/:id :", err);
+            res.json(error);
+        });
+});
+
+app.post("/accept-friend-request/:id", (req, res) => {
+    console.log("/accept-friend-request/:id :", req.params.id);
+    db.acceptFriend(req.session.userId, req.params.id.slice(1))
+        .then((result) => {
+            console.log("/accept-friend-request/:id :", result.rows);
+            res.json();
+        })
+        .catch((err) => {
+            console.log("error /accept-friend-request/:id  ", err);
+            res.json(err);
+        });
+});
+
+app.post("/end-friendship/:id", (req, res) => {
+    console.log("/end-friendship/:id :", req.params.id);
+    db.deleteFriend(req.session.userId, req.params.id.slice(1))
+        .then((result) => {
+            console.log("/end-friendship/:id :", result.rows);
+            res.json();
+        })
+        .catch((err) => {
+            console.log("error /end-friendship/:id :", err);
+            res.json(error);
         });
 });
 

@@ -1,8 +1,11 @@
 import React from "react";
+import { BrowserRouter, Route, Link, HashRouter } from "react-router-dom";
 import axios from "./axios";
 import ProfilePic from "./profilepic";
 import Uploader from "./uploader";
 import Profile from "./profile";
+import OtherProfile from "./otherprofile";
+import FindPeople from "./findPeople";
 
 export default class App extends React.Component {
     constructor() {
@@ -64,48 +67,50 @@ export default class App extends React.Component {
     render() {
         console.log("this.state:", this.state);
         return (
-            <div className="App">
-                <h4>
-                    <img src="WOC.png" width="30px" height="30px" /> WOMEN OF
-                    COLORS IN TECH
-                </h4>
-                <div className="headerPic">
-                    <ProfilePic
-                        profilePic={this.state.profilePic}
-                        toggleModal={() => this.toggleModal()}
-                        setImage={() => this.setImage()}
+            <BrowserRouter>
+                <div className="App">
+                    <h4>
+                        <img src="WOC.png" width="30px" height="30px" /> WOMEN
+                        OF COLORS IN TECH
+                    </h4>
+                    <div className="headerPic">
+                        <ProfilePic
+                            profilePic={this.state.profilePic}
+                            toggleModal={() => this.toggleModal()}
+                            setImage={() => this.setImage()}
+                        />
+                    </div>
+                    <Route
+                        exact
+                        path="/"
+                        render={() => (
+                            <div>
+                                <Link to="/find" className="find">
+                                    Meet other people
+                                </Link>
+                                <Profile
+                                    id={this.state.id}
+                                    first={this.state.first}
+                                    last={this.state.last}
+                                    profilePic={this.state.profilePic}
+                                    openModal={this.openModal}
+                                    bio={this.state.bio}
+                                    setBio={this.setBio}
+                                />
+                            </div>
+                        )}
                     />
+                    {this.state.uploaderIsVisible && (
+                        <Uploader
+                            setImage={() => this.setImage()}
+                            closeModal={() => this.closeModal()}
+                        />
+                    )}
+                    <Route path="/user/:id" component={OtherProfile} />
+                    <Route exact path="/find" component={FindPeople} />
+                    <footer>©Hoan-My 2020</footer>
                 </div>
-
-                <Profile
-                    first={this.state.first}
-                    last={this.state.last}
-                    profilePic={this.state.profilePic}
-                    toggleModal={() => this.toggleModal()}
-                    setImage={() => this.setImage()}
-                    bio={this.state.bio}
-                    setBio={() => this.this.setBio()}
-                />
-
-                {/* <ProfilePic
-                    first={this.state.first}
-                    last={this.state.last}
-                    profilePic={this.state.profilePic}
-                    toggleModal={this.toggleModal}
-                    setImage={this.setImage}
-                /> */}
-                {/* <p onClick={() => this.toggleModal()}>
-                    {" "}
-                    click me to toggle the modal{" "}
-                </p> */}
-                {this.state.uploaderIsVisible && (
-                    <Uploader
-                        setImage={() => this.setImage()}
-                        closeModal={() => this.closeModal()}
-                    />
-                )}
-                <footer>©Hoan-My 2020</footer>
-            </div>
+            </BrowserRouter>
         );
     }
 }
