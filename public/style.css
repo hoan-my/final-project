@@ -162,16 +162,25 @@ Link:hover {
     color: darkblue;
 }
 
-button {
+.friendButton {
+    height: 40px;
+    padding: 0px;
+    margin-top: -20px;
+}
+button,
+Link {
     color: white;
     /* border-radius: 25px; */
     background-image: linear-gradient(to right, lightcoral, lightcoral);
     padding: 10px 10px;
     text-decoration: none;
     border-radius: 50px 50px;
+    padding: 10px 10px;
+    text-align: top;
 }
 
-button:hover {
+button:hover,
+Link:hover {
     background-image: linear-gradient(to left, yellow, yellow);
     color: darkblue;
 }

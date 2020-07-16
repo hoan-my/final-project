@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import axios from "./axios";
 
 export default function FriendButton(props) {
-    const [friendId, setFriendId] = useState(props.friendId);
-    const [buttonText, setButtonText] = useState("ADD FRIEND");
+    console.log("props:", props.friendId);
+    const friendId = props.friendId;
+    const [buttonText, setButtonText] = useState("SEND FRIEND REQUEST");
     const [friendStatus, setFriendStatus] = useState(null);
 
     const handleClick = (e) => {
@@ -11,9 +12,10 @@ export default function FriendButton(props) {
         console.log("handleclick running");
         if (friendStatus == null) {
             axios
-                .post(`/make-friend-request/:${friendId}`)
+                .post(`/make-friend-request/:${friendId}.json`)
                 .then((result) => {
                     console.log("Result POST /make-friend-request/: ", result);
+                    buttonText == "FRIEND REQUEST PENDING";
                     setButtonText("FRIEND REQUEST PENDING");
                     setFriendStatus("pending");
                 })
@@ -22,7 +24,7 @@ export default function FriendButton(props) {
                 });
         } else if (buttonText == "FRIEND REQUEST PENDING") {
             axios
-                .post(`/accept-friend-request/:${friendId}`)
+                .post(`/accept-friend-request/:${friendId}.json`)
                 .then((result) => {
                     setButtonText("ACCEPT FRIEND REQUEST");
                     setFriendStatus("accepted");
@@ -35,7 +37,7 @@ export default function FriendButton(props) {
             buttonText == "ACCEPT FRIEND REQUEST"
         ) {
             axios
-                .post(`/end-friendship/:${friendId}`)
+                .post(`/end-friendship/:${friendId}.json`)
                 .then((result) => {
                     console.log("result in /end-friendship/ :", result);
                     setFriendStatus(null);
@@ -51,11 +53,11 @@ export default function FriendButton(props) {
         console.log("friendId:", friendId);
         console.log("friendStatus:", friendStatus);
         axios
-            .get(`/get-initial-status/:${friendId}`)
+            .get(`/get-initial-status/:${friendId}.json`)
             .then((result) => {
                 console.log(result);
                 if (
-                    result.data.sender_id == friendId &&
+                    result.data.receiver_id == friendId &&
                     !result.data.accepted
                 ) {
                     setButtonText("PENDING FRIEND REQUEST");
@@ -74,7 +76,7 @@ export default function FriendButton(props) {
 
     return (
         <div className="friendButton">
-            <button onClick={(e) => handleClick(e)}>{buttonText}</button>
+            <p onClick={(e) => handleClick(e)}> {buttonText} </p>
         </div>
     );
 }

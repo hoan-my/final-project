@@ -331,8 +331,15 @@ app.post("/bio", (req, res) => {
         });
 });
 
-app.get("/get-initial-status/:id", (req, res) => {
-    console.log("/get-initial-status/:id req.params.id :", req);
+app.get("/get-initial-status/:id.json", (req, res) => {
+    console.log(
+        "/get-initial-status/:id req.session.userId :",
+        req.session.userId
+    );
+    console.log(
+        "/get-initial-status/:id req.params.id :",
+        req.params.id.slice(1)
+    );
     db.getInitialStatus(req.session.userId, req.params.id.slice(1))
         .then((result) => {
             console.log("/get-initial-status/:id result.rows :", result.rows);
@@ -348,8 +355,8 @@ app.get("/get-initial-status/:id", (req, res) => {
         });
 });
 
-app.post("/make-friend-request/:id", (req, res) => {
-    console.log("/make-friend-request/:id :", req.params.id);
+app.post("/make-friend-request/:id.json", (req, res) => {
+    console.log("/make-friend-request/:id :", req.params.id.slice(1));
     db.requestFriend(req.session.userId, req.params.id.slice(1))
         .then((result) => {
             console.log("/make-friend-request/:id :", result.rows);
@@ -361,7 +368,7 @@ app.post("/make-friend-request/:id", (req, res) => {
         });
 });
 
-app.post("/accept-friend-request/:id", (req, res) => {
+app.post("/accept-friend-request/:id.json", (req, res) => {
     console.log("/accept-friend-request/:id :", req.params.id);
     db.acceptFriend(req.session.userId, req.params.id.slice(1))
         .then((result) => {
@@ -374,12 +381,12 @@ app.post("/accept-friend-request/:id", (req, res) => {
         });
 });
 
-app.post("/end-friendship/:id", (req, res) => {
+app.post("/end-friendship/:id.json", (req, res) => {
     console.log("/end-friendship/:id :", req.params.id);
     db.deleteFriend(req.session.userId, req.params.id.slice(1))
         .then((result) => {
             console.log("/end-friendship/:id :", result.rows);
-            res.json();
+            res.json({ friendStatus: null });
         })
         .catch((err) => {
             console.log("error /end-friendship/:id :", err);

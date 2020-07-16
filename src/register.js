@@ -1,6 +1,8 @@
 import React from "react";
 import axios from "./axios"; //import copy of axios (original is in node)
 import { Link } from "react-router-dom";
+
+
 export default class Register extends React.Component {
     constructor(props) {
         super(props);

@@ -11,10 +11,10 @@ export default function Profile(props) {
         <BrowserRouter>
             <div className="profile">
                 <div className="content">
-                    👩🏻‍💻 Hello {props.first} !! How about
+                    Hello {props.first} !! Would you like to
                     <button>
                         <Link to="/find" className="find">
-                            connecting with new people
+                            connect with new people
                         </Link>
                         <Route path="/user/:id" component={OtherProfile} />
                     </button>{" "}
