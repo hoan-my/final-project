@@ -6,6 +6,7 @@ import Uploader from "./uploader";
 import Profile from "./profile";
 import OtherProfile from "./otherprofile";
 import FindPeople from "./findPeople";
+import Friends from "./friends";
 
 export default class App extends React.Component {
     constructor() {
@@ -74,6 +75,7 @@ export default class App extends React.Component {
                         OF COLORS IN TECH
                     </h4>
                     <div className="headerPic">
+                        <Link to="/friends">Friends</Link>
                         <ProfilePic
                             profilePic={this.state.profilePic}
                             toggleModal={() => this.toggleModal()}
@@ -104,6 +106,7 @@ export default class App extends React.Component {
                         />
                     )}
 
+                    <Route path="/chat" component={chat} />
                     <footer>©Hoan-My 2020</footer>
                 </div>
             </BrowserRouter>

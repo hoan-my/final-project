@@ -1,7 +1,30 @@
-//will contain all action creator functions
+import axios from "./axios";
+// will contain all of our action creator functions
+// action creator is just a function that returns an object with a property called TYPE
+// object that it returns is called an action
 
-export function changingState() {
+export async function showFriends() {
+    const { data } = await axios.get("/friends-wannabes");
+    // console.log(data);
     return {
-        type: "CHANGE_STATE", // UPDATE_BIO all caps syntax
+        type: "SHOW_FRIENDS",
+        friendsList: data,
+    };
+}
+
+export async function deleteFriend(id) {
+    await axios.post(`/unfriend/:${id}`);
+    // console.log(data);
+    return {
+        type: "DELETE_FRIEND",
+        id,
+    };
+}
+
+export async function acceptFriend(id) {
+    await axios.post(`/accept-friend/:${id}`);
+    return {
+        type: "ACCEPT_FRIEND",
+        id,
     };
 }

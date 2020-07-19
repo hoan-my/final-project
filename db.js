@@ -124,24 +124,52 @@ exports.requestFriend = (myId, otherId) => {
     );
 };
 
+// exports.acceptFriend = (myId, otherId) => {
+//     return db.query(
+//         `
+//         UPDATE friendships SET accepted= 'true'
+//         WHERE receiver_id = $1 AND sender_id =$2
+//         RETURNING *
+//         `,
+//         [myId, otherId]
+//     );
+// };
+
+// exports.deleteFriend = (myId, otherId) => {
+//     return db.query(
+//         `
+//         DELETE FROM friendships
+//         WHERE (receiver_id = $1 AND sender_id = $2)
+//         OR (receiver_id = $2 AND sender_id = $1);
+//         `,
+//         [myId, otherId]
+//     );
+// };
+
+exports.getWannabes = (id) => {
+    return db.query(
+        `SELECT users.id, first, last, url, accepted
+            FROM friendships
+            JOIN users
+            ON (accepted = false AND receiver_id = $1 AND sender_id = users.id)
+            OR (accepted = true AND receiver_id = $1 AND sender_id = users.id)
+            OR (accepted = true AND sender_id = $1 AND receiver_id = users.id)
+    `,
+        [id]
+    );
+};
+
 exports.acceptFriend = (myId, otherId) => {
     return db.query(
-        `
-        UPDATE friendships SET accepted= 'true'
-        WHERE receiver_id = $1 AND sender_id =$2 
-        RETURNING *
-        `,
+        `UPDATE friendships SET accepted=true WHERE sender_id=$1 AND receiver_id=$2 RETURNING *`,
         [myId, otherId]
     );
 };
 
 exports.deleteFriend = (myId, otherId) => {
     return db.query(
-        `
-        DELETE FROM friendships 
-        WHERE (receiver_id = $1 AND sender_id = $2)
-        OR (receiver_id = $2 AND sender_id = $1);
-        `,
+        `DELETE FROM friendships WHERE receiver_id = $1 AND sender_id = $2
+        OR receiver_id = $2 AND sender_id = $1 RETURNING *`,
         [myId, otherId]
     );
 };

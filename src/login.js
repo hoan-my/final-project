@@ -8,7 +8,7 @@ export default class Login extends React.Component {
         this.state = {
             email: "",
             password: "",
-            error: false,
+            //error: false,
         };
     }
     handleChange(e) {
@@ -27,21 +27,12 @@ export default class Login extends React.Component {
         console.log("login function running");
         axios
             .post("/login", this.state)
-            .then((response) => {
-                console.log("response /login:", response);
-                if (response.data.error) {
-                    self.setState({
-                        error: true,
-                    });
-                } else {
-                    self.setState({
-                        error: false,
-                    });
-                    location.replace("/");
-                }
+            .then(function (response) {
+                console.log("response from POST/Login", response);
+                location.replace("/");
             })
-            .catch((err) => {
-                console.log("error in axios POST /login:", err);
+            .catch(function (err) {
+                console.log("err in POST/Login:", err);
             });
     }
     render() {
