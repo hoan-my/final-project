@@ -7,7 +7,6 @@ import Profile from "./profile";
 import OtherProfile from "./otherprofile";
 import FindPeople from "./findPeople";
 import Friends from "./friends";
-
 export default class App extends React.Component {
     constructor() {
         super();
@@ -71,11 +70,12 @@ export default class App extends React.Component {
             <BrowserRouter>
                 <div className="App">
                     <h4>
-                        <img src="WOC.png" width="30px" height="30px" /> WOMEN
-                        OF COLORS IN TECH
+                        <Link to="/profile">
+                            <img src="WOC.png" width="30px" height="30px" />
+                        </Link>
+                        WOMEN OF COLORS IN TECH
                     </h4>
                     <div className="headerPic">
-                        <Link to="/friends">Friends</Link>
                         <ProfilePic
                             profilePic={this.state.profilePic}
                             toggleModal={() => this.toggleModal()}
@@ -106,7 +106,7 @@ export default class App extends React.Component {
                         />
                     )}
 
-                    <Route path="/chat" component={chat} />
+                    {/* <Route path="/chat" component={chat} /> */}
                     <footer>©Hoan-My 2020</footer>
                 </div>
             </BrowserRouter>

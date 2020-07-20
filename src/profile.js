@@ -4,6 +4,7 @@ import BioEditor from "./bioeditor";
 import FindPeople from "./findPeople";
 import { BrowserRouter, Route, Link, HashRouter } from "react-router-dom";
 import OtherProfile from "./otherprofile";
+import Friends from "./friends";
 
 export default function Profile(props) {
     console.log("props in Profile:", props); //always console log props
@@ -14,11 +15,16 @@ export default function Profile(props) {
                     Hello {props.first} !! Would you like to
                     <button>
                         <Link to="/find" className="find">
-                            connect with new people
+                            meet new people
                         </Link>
                         <Route path="/user/:id" component={OtherProfile} />
                     </button>{" "}
-                    ?
+                    ? or check what{" "}
+                    <button>
+                        <Link to="/friends">your friends</Link>
+                        <Route path="/friends" render={() => <Friends />} />
+                    </button>{" "}
+                    are up to ?
                 </div>
                 <h5>
                     {props.first} {props.last} 🤍

@@ -70,6 +70,12 @@ h5 {
     background-color: lightcoral;
 }
 
+h6 {
+    position: relative;
+    color: white;
+    font-size: 50px;
+}
+
 .content {
     z-index: 999;
     margin: 0 auto;
@@ -210,7 +216,7 @@ Link:hover {
 }
 
 .modal {
-    background-color: lightcoral;
+    background-color: rgba(240, 128, 128, 0.692);
     padding: 50px 50px;
     -webkit-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
     -moz-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);

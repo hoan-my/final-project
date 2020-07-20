@@ -42,7 +42,7 @@ export default class OtherProfile extends React.Component {
                     {!this.state.bio && <p>No bio available</p>}
                     <p>{this.state.bio}</p>
 
-                    <FriendButton friendId={this.state.id} />
+                    <FriendButton friendId={location.pathname.slice(6)} />
                 </div>
             </div>
         );

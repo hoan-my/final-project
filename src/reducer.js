@@ -2,9 +2,10 @@
 
 export default function reducer(state = { showFriends: [] }, action) {
     if (action.type == "SHOW_FRIENDS") {
+        console.log("show friends action", action);
         state = {
             ...state,
-            showFriends: action.showFriends,
+            showFriends: action.myFriends,
         };
     }
 

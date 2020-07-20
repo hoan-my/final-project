@@ -283,10 +283,10 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
 });
 
 app.get("/user", (req, res) => {
-    console.log(req.session);
-    db.getUser(req.session.id)
+    console.log("req.session.id:", req.session.userId);
+    db.getUser(req.session.userId)
         .then((result) => {
-            console.log("result GET /user: ", result);
+            console.log("result GET /user: ", result.rows);
             res.json(result.rows[0]);
         })
         .catch((err) => {
@@ -296,12 +296,12 @@ app.get("/user", (req, res) => {
 });
 
 app.get("/user/:id.json", (req, res) => {
-    if (req.session.userId == req.params.id) {
+    if (req.session.userId == req.params.userId) {
         res.json({ match: true });
     }
     db.getUser(req.params.id)
         .then((result) => {
-            console.log("result GET /user/id :", result);
+            console.log("result GET /user/id :", result.rows);
             res.json({
                 first: result.rows[0].first,
                 last: result.rows[0].last,
@@ -354,6 +354,7 @@ app.post("/bio", (req, res) => {
         });
 });
 
+///FRIEND BUTTON
 app.get("/get-initial-status/:id.json", (req, res) => {
     console.log(
         "/get-initial-status/:id req.session.userId :",
@@ -363,67 +364,38 @@ app.get("/get-initial-status/:id.json", (req, res) => {
         "/get-initial-status/:id req.params.id :",
         req.params.id.slice(1)
     );
-    db.getInitialStatus(req.session.userId, req.params.id.slice(1))
+    db.getInitialStatus(req.params.id.slice(1), req.session.id)
         .then((result) => {
-            console.log("/get-initial-status/:id result.rows :", result.rows);
-            if (result.rows.length == 0) {
-                res.json({ friendStatus: null });
-            } else {
-                res.json(result.rows[0]);
-            }
+            res.json(result);
         })
         .catch((err) => {
-            console.log("error /get-initial-status/:id", err);
-            res.json(err);
+            console.log("error in /get-initial-status/: ", err);
         });
 });
 
 app.post("/make-friend-request/:id.json", (req, res) => {
-    console.log("/make-friend-request/:id :", req.params.id.slice(1));
-    db.requestFriend(req.session.userId, req.params.id.slice(1))
+    console.log("/make-friend-request/:id req.params:", req.params.id.slice(1));
+    console.log(
+        "/make-friend-request/:id req.session.userId :",
+        req.session.userId
+    );
+    db.requestFriend(req.params.id.slice(1), req.session.userId)
         .then((result) => {
-            console.log("/make-friend-request/:id :", result.rows);
-            res.json();
+            console.log("result in request friend:", result);
+            res.json(result);
         })
         .catch((err) => {
-            console.log("error /make-friend-request/:id :", err);
-            res.json(err);
+            console.log("error in /make-friend-request/: ", err);
         });
 });
 
-// app.post("/accept-friend-request/:id.json", (req, res) => {
-//     console.log("/accept-friend-request/:id :", req.params.id);
-//     db.acceptFriend(req.session.userId, req.params.id.slice(1))
-//         .then((result) => {
-//             console.log("/accept-friend-request/:id :", result.rows);
-//             res.json();
-//         })
-//         .catch((err) => {
-//             console.log("error /accept-friend-request/:id  ", err);
-//             res.json(err);
-//         });
-// });
-
-// app.post("/end-friendship/:id.json", (req, res) => {
-//     console.log("/end-friendship/:id :", req.params.id);
-//     db.deleteFriend(req.session.userId, req.params.id.slice(1))
-//         .then((result) => {
-//             console.log("/end-friendship/:id :", result.rows);
-//             res.json({ friendStatus: null });
-//         })
-//         .catch((err) => {
-//             console.log("error /end-friendship/:id :", err);
-//             res.json(err);
-//         });
-// });
-
+///
 app.get("/friends-wannabes", (req, res) => {
-    console.log("/friends-wannabes req.session:", req.session);
-    const { id } = req.session;
-    db.getWannabes(id)
+    console.log("/friends-wannabes req.session:", req.session.userId);
+    db.getWannabes(req.session.userId)
         .then((result) => {
             console.log("result: ", result);
-            res.json(result);
+            res.json(result.rows);
         })
         .catch((err) => {
             console.log("error GET/friends-wannabes: ", err);
@@ -431,11 +403,11 @@ app.get("/friends-wannabes", (req, res) => {
 });
 
 app.post("/accept-friend/:id", (req, res) => {
-    console.log("/accept-friend/ req.params.id:", req.params.id);
-    console.log("/accept-friend/ req.session.id:", req.session.id);
-    db.acceptFriend(req.params.id, req.session.id)
+    console.log("/accept-friend/ req.params.id:", req.params.userId);
+    console.log("/accept-friend/ req.session.id:", req.session.userId);
+    db.acceptFriend(req.params.userId, req.session.userId)
         .then((result) => {
-            res.json({ accept: true });
+            res.json(result);
         })
         .catch((err) => {
             console.log(
@@ -446,9 +418,9 @@ app.post("/accept-friend/:id", (req, res) => {
 });
 
 app.post("/unfriend/:id", (req, res) => {
-    console.log("/unfriend/ req.params.id:", req.params.id);
-    console.log("/unfriend/ req.session.id:", req.session.id);
-    db.deleteFriend(req.params.id, req.session.id)
+    console.log("/unfriend/ req.params.id:", req.params.userId);
+    console.log("/unfriend/ req.session.id:", req.session.userId);
+    db.deleteFriend(req.params.userId, req.session.userId)
         .then((result) => {
             res.json(result);
         })
@@ -471,35 +443,34 @@ server.listen(8080, function () {
 });
 
 //all socket code here
-io.on("connection", function (socket) {
-    console.log(`socket with id ${socket.id} just connected!`);
+// io.on("connection", function (socket) {
+//     console.log(`socket with id ${socket.id} just connected!`);
 
-    //only run socket when user is logged in
-    if (!socket.request.session.userId) {
-        return socket.disconnect(true);
-    }
+//     //only run socket when user is logged in
+//     if (!socket.request.session.userId) {
+//         return socket.disconnect(true);
+//     }
 
-    const userId = socket.request.session.userId;
+//     const userId = socket.request.session.userId;
 
-    //GET LAST 10 MESSAGES HERE
-    db.getLastTenMsgs().then((data) => {
-        console.log(data.rows);
+//     //GET LAST 10 MESSAGES HERE
+//     db.getLastTenMsgs().then((data) => {
+//         console.log(data.rows);
 
-        //db query will be JOIN (users and chat tables)
+//         //db query will be JOIN (users and chat tables)
 
-        // get messages and send them the the client
+//         // get messages and send them the the client
 
-        io.sockets.emit("'chatMessages", data.rows);
-    });
+//         io.sockets.emit("'chatMessages", data.rows);
+//     });
 
-    socket.on("My amazing chat message", newMsg => { 
-        console.log("This message is coming from chat.js component")
-    })
+//     socket.on("My amazing chat message", newMsg => {
+//         console.log("This message is coming from chat.js component")
+//     })
 
-
-    //socket.on("hello", data => {console.log(data);})
-    //io.sockets.sockets[socketId].emit("newConnection")
-    socket.on("disconnect", () => {
-        console.log(`socket with id ${socket.id} just DISconnected!`);
-    });
-});
+//     //socket.on("hello", data => {console.log(data);})
+//     //io.sockets.sockets[socketId].emit("newConnection")
+//     socket.on("disconnect", () => {
+//         console.log(`socket with id ${socket.id} just DISconnected!`);
+//     });
+// });

@@ -5,10 +5,10 @@ import axios from "./axios";
 
 export async function showFriends() {
     const { data } = await axios.get("/friends-wannabes");
-    // console.log(data);
+    console.log(data);
     return {
         type: "SHOW_FRIENDS",
-        friendsList: data,
+        myFriends: data,
     };
 }
 
