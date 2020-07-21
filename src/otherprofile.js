@@ -31,19 +31,18 @@ export default class OtherProfile extends React.Component {
     render() {
         return (
             <div className="OtherProfile">
-                <h1>
+                <h3>
                     {this.state.first} {this.state.last}
-                </h1>
+                </h3>
 
                 <div>
-                    <img className="profile-pic" src={this.state.profilePic} />
+                    <img className="profile-pic" src="/profilePic.png" />
                 </div>
                 <div>
                     {!this.state.bio && <p>No bio available</p>}
                     <p>{this.state.bio}</p>
-
-                    <FriendButton friendId={location.pathname.slice(6)} />
                 </div>
+                <FriendButton friendId={location.pathname.slice(6)} />
             </div>
         );
     }

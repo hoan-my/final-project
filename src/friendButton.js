@@ -42,7 +42,7 @@ export default function FriendButton(props) {
 
     return (
         <div className="friendButton">
-            <p onClick={handleClick}> {buttonText} </p>
+            <h1 onClick={handleClick}> {buttonText} </h1>
         </div>
     );
 }

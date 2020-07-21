@@ -379,7 +379,7 @@ app.post("/make-friend-request/:id.json", (req, res) => {
         "/make-friend-request/:id req.session.userId :",
         req.session.userId
     );
-    db.requestFriend(req.params.id.slice(1), req.session.userId)
+    db.requestFriend(req.session.userId, req.params.id.slice(1))
         .then((result) => {
             console.log("result in request friend:", result);
             res.json(result);
