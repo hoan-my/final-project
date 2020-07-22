@@ -5,6 +5,7 @@ import FindPeople from "./findPeople";
 import { BrowserRouter, Route, Link, HashRouter } from "react-router-dom";
 import OtherProfile from "./otherprofile";
 import Friends from "./friends";
+import Chat from "./chat";
 
 export default function Profile(props) {
     console.log("props in Profile:", props); //always console log props
@@ -24,7 +25,12 @@ export default function Profile(props) {
                         <Link to="/friends">your friends</Link>
                         <Route path="/friends" render={() => <Friends />} />
                     </button>{" "}
-                    are up to ?
+                    are up to
+                    <button>
+                        <Link to="/chat">in the Chat Room</Link>
+                        <Route path="/chat" render={() => <Chat />} />{" "}
+                    </button>
+                    ?
                 </div>
                 <h5>
                     {props.first} {props.last} 🤍

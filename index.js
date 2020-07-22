@@ -474,3 +474,39 @@ server.listen(8080, function () {
 //         console.log(`socket with id ${socket.id} just DISconnected!`);
 //     });
 // });
+
+io.on("connection", function (socket) {
+    console.log(`socket with id ${socket.id} just CONNECTED!`);
+    const userId = socket.request.session.userId;
+    //only run socket when user is logged in
+    if (!userId) {
+        return socket.disconnect(true);
+    }
+
+    db.getLastTenMsgs()
+        .then((data) => {
+            io.sockets.emit("chatMessages", data.rows);
+            console.log("Last 10 messages: ", data.rows);
+        })
+        .catch((err) => {
+            console.log("Error in getLastTenMsgs:", err);
+        });
+
+    socket.on("My amazing chat message", (newMsg) => {
+        db.sendMessage(newMsg, userId)
+            .then((result) => {
+                console.log("Message sent: ", result.rows[0]);
+                db.getSenders(userId)
+                    .then((result) => {
+                        console.log("sender: ", result.rows[0]);
+                        io.sockets.emit("chatMessage", result.rows[0]);
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+            })
+            .catch((err) => {
+                console.log("error in sendMessage: ", err);
+            });
+    });
+});

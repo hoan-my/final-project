@@ -13,11 +13,11 @@ export const init = (store) => {
             store.dispatch(chatMessages(msgs));
         });
 
-        socket.on("addNewCommonMessage", (msg) => {
-            // console.log("last added message", msg);
-            store.dispatch(newChatMessage(msg[0]));
-        });
+        // socket.on("addNewCommonMessage", (msg) => {
+        //     // console.log("last added message", msg);
+        //     store.dispatch(newChatMessage(msg[0]));
+        // });
 
-        // socket.on("chatMessage", (msg) => store.dispatch(chatMessage(msg)));
+        socket.on("chatMessage", (msg) => store.dispatch(chatMessage(msg)));
     }
 };
