@@ -23,6 +23,7 @@ let elem;
 const userIsLoggedIn = location.pathname != "/welcome";
 
 if (userIsLoggedIn) {
+    console.log("app is rendering");
     init(store);
     elem = (
         <Provider store={store}>

@@ -48,10 +48,6 @@ export default class Login extends React.Component {
                 )}
                 <div className="row">
                     <div className="column">
-                        <h3>
-                            Promoting Innovation, Cultural Inclusion and Gender
-                            Equality in the Tech World.
-                        </h3>
                         <form>
                             <h2> Already part of the community ? </h2>
                             <input
@@ -72,20 +68,8 @@ export default class Login extends React.Component {
                                 onClick={(e) => this.login(e)}
                             />
                         </form>
-                        <p>
-                            Forgot your password ?
-                            <Link to="/resetPassword"> Reset </Link>
-                        </p>
-                        <div className="content">
-                            When we listen and celebrate what is both common and
-                            different, we become a wiser, more inclusive, and
-                            better organization. — Pat Wadors, Head of HR at
-                            LinkedIn
-                        </div>
                     </div>
-                    <div className="column">
-                        <img src="img1.jpg" />
-                    </div>
+                    <div className="column"></div>
                 </div>
             </div>
         );

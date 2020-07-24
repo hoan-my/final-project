@@ -1,60 +1,59 @@
 import React from "react";
-import ProfilePic from "./profilepic";
-import BioEditor from "./bioeditor";
-import FindPeople from "./findPeople";
+import axios from "./axios";
 import { BrowserRouter, Route, Link, HashRouter } from "react-router-dom";
-import OtherProfile from "./otherprofile";
-import Friends from "./friends";
-import Chat from "./chat";
 
-export default function Profile(props) {
-    console.log("props in Profile:", props); //always console log props
-    return (
-        <BrowserRouter>
+// export default function Profile(props) {
+//     console.log("props in Profile:", props); //always console log props
+//     return (
+//         <div className="profile">
+//             Welcome {props.first}.
+//             <Link to="/form" className="form">
+//                 Start your Journey...
+//             </Link>
+//             <ProfilePic
+//                 first={props.first}
+//                 last={props.last}
+//                 profilePic={props.profilePic}
+//                 toggleModal={props.toggleModal}
+//                 setImage={props.setImage}
+//             />
+//         </div>
+//     );
+// }
+
+export default class Profile extends React.Component {
+    constructor() {
+        super();
+        this.state = {};
+        this.componentDidMount = this.componentDidMount.bind(this);
+    }
+    componentDidMount() {
+        console.log("my component has mounted");
+        axios.get("/user").then((response) => {
+            console.log("response GET/user: ", response.data);
+            this.setState({
+                first: response.data[0].first,
+                last: response.data[0].last,
+            });
+        });
+    }
+
+    render() {
+        console.log("state in Profiles:", this.state); //always console log props
+        return (
             <div className="profile">
-                <div className="content">
-                    Hello {props.first} !! Would you like to
-                    <button>
-                        <Link to="/find" className="find">
-                            meet new people
-                        </Link>
-                        <Route path="/user/:id" component={OtherProfile} />
-                    </button>{" "}
-                    ? or check what{" "}
-                    <button>
-                        <Link to="/friends">your friends</Link>
-                        <Route path="/friends" render={() => <Friends />} />
-                    </button>{" "}
-                    are up to
-                    <button>
-                        <Link to="/chat">in the Chat Room</Link>
-                        <Route path="/chat" render={() => <Chat />} />{" "}
-                    </button>
-                    ?
-                </div>
-                <h5>
-                    {props.first} {props.last} 🤍
-                </h5>
-                <Route exact path="/find" component={FindPeople} />
-                <div className="row2">
-                    <div className="column">
-                        <div className="ProfilePic">
-                            <ProfilePic
-                                first={props.first}
-                                last={props.last}
-                                profilePic={props.profilePic}
-                                toggleModal={props.toggleModal}
-                                setImage={props.setImage}
-                            />
-                        </div>
-                    </div>
-                    <div className="column">
-                        <div className="bio">
-                            <BioEditor bio={props.bio} setBio={props.setBio} />
-                        </div>
-                    </div>
-                </div>
+                Welcome {this.state.first}.
+                <Link to="/form" className="form">
+                    Start your Journey...
+                </Link>
+                {/* <ProfilePic
+                    first={props.first}
+                    last={props.last}
+                    profilePic={props.profilePic}
+                    toggleModal={props.toggleModal}
+                    setImage={props.setImage}
+                /> */}
             </div>
-        </BrowserRouter>
-    );
+        );
+    }
 }

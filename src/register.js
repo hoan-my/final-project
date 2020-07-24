@@ -2,7 +2,6 @@ import React from "react";
 import axios from "./axios"; //import copy of axios (original is in node)
 import { Link } from "react-router-dom";
 
-
 export default class Register extends React.Component {
     constructor(props) {
         super(props);
@@ -58,12 +57,7 @@ export default class Register extends React.Component {
                 )}
                 <div className="row">
                     <div className="column">
-                        <h3>
-                            Promoting Innovation, Cultural Inclusion and Gender
-                            Equality in the Tech World.
-                        </h3>
                         <form>
-                            <h2> Be part of the Change now ! </h2>
                             <input
                                 name="first"
                                 placeholder="First name"
@@ -96,11 +90,6 @@ export default class Register extends React.Component {
                             Already part of the community ?
                             <Link to="/login"> Login </Link>
                         </p>
-                        <div className="content">
-                            Diversity drives innovation - when we limit who can
-                            contribute, we in turn limit what problems we can
-                            solve. — Telle Whitney
-                        </div>
                     </div>
                     <div className="column">
                         <img src="img1.jpg" />

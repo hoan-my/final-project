@@ -123,7 +123,7 @@ app.post("/register", (req, res) => {
             )
                 .then((result) => {
                     console.log("result in insertUser:", result);
-                    req.session.userId = result.rows[0].id; //HERE
+                    req.session.userId = result.rows[0].id;
                     res.json(result.rows[0]);
                 })
                 .catch((err) => {
@@ -153,9 +153,8 @@ app.post("/login", (req, res) => {
             bc.compare(req.body.password, storedPassword)
                 .then((match) => {
                     if (match === true) {
-                        //const { id, first, last } = user;
                         req.session.userId = result.rows[0].id;
-                        //req.session.user = { id, first, last };
+
                         res.json("Login is successful");
                     } else {
                         res.json("Login info is incorrect");
@@ -168,97 +167,6 @@ app.post("/login", (req, res) => {
         })
         .catch((err) => {
             console.log("error in hash POST /login:", err);
-            res.json(error);
-        });
-});
-
-app.post("/resetPassword/start", (req, res) => {
-    db.getUser(req.body.email)
-        .then((result) => {
-            console.log("result in /resetPassword/start:", result.rows);
-            const registeredEmail = result.rows[0].email;
-            if (registeredEmail == req.body.email) {
-                const secretCode = cryptoRandomString({
-                    length: 6,
-                });
-                console.log(secretCode);
-                db.insertResetCode(req.body.email, secretCode)
-                    .then((result) => {
-                        console.log("insertResetCode is running");
-                        sendEmail(
-                            req.body.email,
-                            "Your secret code",
-                            `In order to reset your password, please enter your : ${secretCode}`
-                        )
-                            .then((result) => {
-                                res.json("E-mail is sent");
-                            })
-                            .catch((err) => {
-                                console.log("error in sendEmail", err);
-                            });
-                    })
-                    .catch((err) => {
-                        console.log("error in inserResetCode", err);
-                    });
-            }
-        })
-        .catch((err) => {
-            console.log("error in getUser /resetPassword/start:", err);
-            res.json({ error: true });
-        });
-});
-
-app.post("/resetPassword/verify", (req, res) => {
-    console.log("resetPassword verify running");
-    console.log(req.body);
-    let email = req.body.email;
-    if (email == "") {
-        email = null;
-    }
-    let changedPassword = req.body.changedPassword;
-    if (changedPassword == "") {
-        changedPassword = null;
-    }
-    let resetCode = req.body.resetCode;
-    if (resetCode == "") {
-        resetCode = null;
-    }
-    let error = {
-        error: true,
-    };
-    db.checkResetCode(email)
-        .then((result) => {
-            console.log("email:", email);
-            console.log("result from checkResetCode:", result.rows);
-            console.log("resetCode", resetCode);
-            if (resetCode == result.rows[0].code) {
-                bc.hash(changedPassword)
-                    .then((hashedPassword) => {
-                        db.updatePassword(email, hashedPassword)
-                            .then(() => {
-                                res.json("update successsful");
-                            })
-                            .catch((err) => {
-                                console.log(
-                                    "error in updatePassword /resetPassword/verify:",
-                                    err
-                                );
-                                res.json(error);
-                            });
-                    })
-                    .catch((err) => {
-                        console.log(
-                            "error in hash /resetPassword/verify:",
-                            err
-                        );
-                        res.json(error);
-                    });
-            } else {
-                res.json(error);
-            }
-        })
-        .catch((err) => {
-            console.log("error in checkResetCode /resetPassword/verify:", err);
             res.json(error);
         });
 });
@@ -282,12 +190,25 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
     }
 });
 
-app.get("/user", (req, res) => {
-    console.log("req.session.id:", req.session.userId);
-    db.getUser(req.session.userId)
+app.post("/form", (req, res) => {
+    console.log(req.body);
+    db.insertForm(req.body.dateStart, req.body.dateEnd, req.body.location)
         .then((result) => {
-            console.log("result GET /user: ", result.rows);
+            console.log("result in insertForm:", result);
             res.json(result.rows[0]);
+        })
+        .catch((err) => {
+            console.log("error in insertForm:", err);
+            res.json(error);
+        });
+});
+
+app.get("/plan", (req, res) => {
+    console.log("req.session.id:", req.session.userId);
+    db.getPlanner(req.session.userId)
+        .then((result) => {
+            console.log("result GET /planner: ", result.rows);
+            res.json(result.rows);
         })
         .catch((err) => {
             res.sendStatus(500);
@@ -295,35 +216,16 @@ app.get("/user", (req, res) => {
         });
 });
 
-app.get("/user/:id.json", (req, res) => {
-    if (req.session.userId == req.params.userId) {
-        res.json({ match: true });
-    }
-    db.getUser(req.params.id)
+app.get("/user", (req, res) => {
+    console.log("req.session.id:", req.session.userId);
+    db.getUser(req.session.userId)
         .then((result) => {
-            console.log("result GET /user/id :", result.rows);
-            res.json({
-                first: result.rows[0].first,
-                last: result.rows[0].last,
-                profilePic: result.rows[0].imageUrl,
-                bio: result.rows[0].bio,
-                id: result.rows[0].id,
-            });
-        })
-        .catch((err) => {
-            res.sendStatus(500);
-            console.log("Error GET /user/id :", err);
-        });
-});
-
-app.get("/users", (req, res) => {
-    db.recentUsers()
-        .then((result) => {
-            console.log("result GET/users: ", result.rows);
+            console.log("result GET /user: ", result.rows);
             res.json(result.rows);
         })
         .catch((err) => {
-            console.log("error GET/users : ", err);
+            res.sendStatus(500);
+            console.log("Error in GET/user: ", err);
         });
 });
 
@@ -354,81 +256,6 @@ app.post("/bio", (req, res) => {
         });
 });
 
-///FRIEND BUTTON
-app.get("/get-initial-status/:id.json", (req, res) => {
-    console.log(
-        "/get-initial-status/:id req.session.userId :",
-        req.session.userId
-    );
-    console.log(
-        "/get-initial-status/:id req.params.id :",
-        req.params.id.slice(1)
-    );
-    db.getInitialStatus(req.params.id.slice(1), req.session.id)
-        .then((result) => {
-            res.json(result);
-        })
-        .catch((err) => {
-            console.log("error in /get-initial-status/: ", err);
-        });
-});
-
-app.post("/make-friend-request/:id.json", (req, res) => {
-    console.log("/make-friend-request/:id req.params:", req.params.id.slice(1));
-    console.log(
-        "/make-friend-request/:id req.session.userId :",
-        req.session.userId
-    );
-    db.requestFriend(req.session.userId, req.params.id.slice(1))
-        .then((result) => {
-            console.log("result in request friend:", result);
-            res.json(result);
-        })
-        .catch((err) => {
-            console.log("error in /make-friend-request/: ", err);
-        });
-});
-
-///
-app.get("/friends-wannabes", (req, res) => {
-    console.log("/friends-wannabes req.session:", req.session.userId);
-    db.getWannabes(req.session.userId)
-        .then((result) => {
-            console.log("result: ", result);
-            res.json(result.rows);
-        })
-        .catch((err) => {
-            console.log("error GET/friends-wannabes: ", err);
-        });
-});
-
-app.post("/accept-friend/:id", (req, res) => {
-    console.log("/accept-friend/ req.params.id:", req.params.userId);
-    console.log("/accept-friend/ req.session.id:", req.session.userId);
-    db.acceptFriend(req.params.userId, req.session.userId)
-        .then((result) => {
-            res.json(result);
-        })
-        .catch((err) => {
-            console.log(
-                "error in POST/accept friend request SERVER ROUTE: ",
-                err
-            );
-        });
-});
-
-app.post("/unfriend/:id", (req, res) => {
-    console.log("/unfriend/ req.params.id:", req.params.userId);
-    console.log("/unfriend/ req.session.id:", req.session.userId);
-    db.deleteFriend(req.params.userId, req.session.userId)
-        .then((result) => {
-            res.json(result);
-        })
-        .catch((err) => {
-            console.log("error in POST/end friendship SERVER ROUTE: ", err);
-        });
-});
-
 app.get("*", function (req, res) {
     if (!req.session.userId) {
         res.redirect("/welcome");
@@ -441,39 +268,6 @@ app.get("*", function (req, res) {
 server.listen(8080, function () {
     console.log("server is running...");
 });
-
-//all socket code here
-// io.on("connection", function (socket) {
-//     console.log(`socket with id ${socket.id} just connected!`);
-
-//     //only run socket when user is logged in
-//     if (!socket.request.session.userId) {
-//         return socket.disconnect(true);
-//     }
-
-//     const userId = socket.request.session.userId;
-
-//     //GET LAST 10 MESSAGES HERE
-//     db.getLastTenMsgs().then((data) => {
-//         console.log(data.rows);
-
-//         //db query will be JOIN (users and chat tables)
-
-//         // get messages and send them the the client
-
-//         io.sockets.emit("'chatMessages", data.rows);
-//     });
-
-//     socket.on("My amazing chat message", newMsg => {
-//         console.log("This message is coming from chat.js component")
-//     })
-
-//     //socket.on("hello", data => {console.log(data);})
-//     //io.sockets.sockets[socketId].emit("newConnection")
-//     socket.on("disconnect", () => {
-//         console.log(`socket with id ${socket.id} just DISconnected!`);
-//     });
-// });
 
 io.on("connection", function (socket) {
     console.log(`socket with id ${socket.id} just CONNECTED!`);

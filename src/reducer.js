@@ -9,33 +9,6 @@ export default function reducer(state = { showFriends: [] }, action) {
         };
     }
 
-    if (action.type == "DELETE_FRIEND") {
-        let friendsList = [];
-        state.showFriends.map((each) => {
-            if (each.id != action.id) {
-                friendsList.push(each);
-            }
-        });
-        state = {
-            ...state,
-            showFriends: friendsList,
-        };
-    }
-
-    if (action.type == "ACCEPT_FRIEND") {
-        let friendsList = [];
-        state.showFriends.map((each) => {
-            if (each.id == action.id) {
-                each.accepted = true;
-            }
-            friendsList.push(each);
-        });
-        state = {
-            ...state,
-            showFriends: friendsList,
-        };
-    }
-
     if (action.type === "SHOW_MESSAGES") {
         state = Object.assign({}, state, {
             chatMessages: action.msgs.reverse(),
@@ -46,6 +19,5 @@ export default function reducer(state = { showFriends: [] }, action) {
             chatMessages: state.chatMessages.concat(action.msg),
         });
     }
-
     return state;
 }
