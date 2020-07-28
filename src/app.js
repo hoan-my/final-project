@@ -4,6 +4,8 @@ import axios from "./axios";
 import Profile from "./profile";
 import Form from "./form";
 import Planner from "./planner";
+import List from "./list";
+import Budget from "./budget";
 
 export default class App extends React.Component {
     constructor() {
@@ -67,9 +69,10 @@ export default class App extends React.Component {
                     />
                     <Route path="/form" component={Form} />
                     <Route path="/planner" component={Planner} />
+                    <Route path="/list" component={List} />
+                    <Route path="/budget" component={Budget} />
 
                     {/* <Route path="/chat" component={chat} /> */}
-                    <footer>©Hoan-My 2020</footer>
                 </div>
             </BrowserRouter>
         );

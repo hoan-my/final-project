@@ -31,7 +31,7 @@ export default class BioEditor extends React.Component {
             .post("/bio", { bio: this.state.bio })
             .then((result) => {
                 console.log("result from uploadBio ", result);
-                location.replace("/");
+                location.replace("/plan");
             })
             .catch((err) => {
                 this.setState({

@@ -1,6 +1,9 @@
 import React, { useEffect, useRef } from "react";
 import { socket } from "./socket";
 import { useSelector } from "react-redux";
+import Moment from "react-moment";
+import moment from "moment";
+import { BrowserRouter, Route, Link, HashRouter } from "react-router-dom";
 
 export default function Chat() {
     const elemRef = useRef();
@@ -21,33 +24,41 @@ export default function Chat() {
     };
 
     return (
-        <div className="OtherProfile">
-            <h1>Let's chat!</h1>
-            <div className="chat-container" ref={elemRef}>
+        <div className="app2">
+            <div className="button-app">
+                <Link to="/planner">
+                    {" "}
+                    <h4>
+                        <h3 className="Links"> X </h3>
+                    </h4>
+                </Link>
+            </div>
+
+            <div className="chat-container">
+                <h6>CHATBOX</h6>
+                <textarea
+                    placeholder="Let's chat!"
+                    onKeyDown={keyCheck}
+                ></textarea>
+            </div>
+            <div className="chat-container1" ref={elemRef}>
                 {chatMessages &&
-                    chatMessages.map((each) => (
-                        <div>
+                    chatMessages.reverse().map((each) => (
+                        <div className="chat-container2">
                             <div className="chatSender">
-                                {" "}
-                                <img
-                                    className="chatPic"
-                                    src={each.imageUrl || "profilePic.png"}
-                                />
-                                {each.first} says :
+                                {each.first} 💬 {""}
                             </div>
-                            <div className="center">
-                                <p className="chatMsg" key={each.message_id}>
-                                    {each.message}
-                                </p>
-                                <p className="chatDate">on {each.created_at}</p>
+                            <div className="chatMsg" key={each.message_id}>
+                                {each.message}
+                            </div>
+
+                            <div className="chatDate">
+                                <Moment format="DD/MM/YY h:mm">
+                                    {each.created_at}
+                                </Moment>
                             </div>
                         </div>
                     ))}
-
-                <textarea
-                    placeholder="Add your message here"
-                    onKeyDown={keyCheck}
-                ></textarea>
             </div>
         </div>
     );

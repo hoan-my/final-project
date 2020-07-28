@@ -47,54 +47,44 @@ export default class Register extends React.Component {
     }
     render() {
         return (
-            <div>
-                {this.state.RegistrationError ? (
-                    <p className="error">
-                        Oops... Please try again or refresh the page
-                    </p>
-                ) : (
-                    <p></p>
-                )}
-                <div className="row">
-                    <div className="column">
-                        <form>
-                            <input
-                                name="first"
-                                placeholder="First name"
-                                onChange={(e) => this.handleChange(e)}
-                            />
-                            <input
-                                name="last"
-                                placeholder="Last name"
-                                onChange={(e) => this.handleChange(e)}
-                            />
-                            <input
-                                type="email"
-                                name="email"
-                                placeholder="E-mail"
-                                onChange={(e) => this.handleChange(e)}
-                            />
-                            <input
-                                type="password"
-                                name="password"
-                                placeholder="Password"
-                                onChange={(e) => this.handleChange(e)}
-                            />
-                            <input
-                                type="submit"
-                                value="Register"
-                                onClick={(e) => this.register(e)}
-                            />
-                        </form>
-                        <p>
-                            Already part of the community ?
-                            <Link to="/login"> Login </Link>
-                        </p>
-                    </div>
-                    <div className="column">
-                        <img src="img1.jpg" />
-                    </div>
+            <div className="Register">
+                <h1>VOYAGE</h1>
+                <div className="side-button">
+                    <Link to="/login">
+                        {" "}
+                        <h4>
+                            <h3 className="Links"> LOGIN </h3>
+                        </h4>
+                    </Link>
                 </div>
+                <h2>VOYAGE ENTRE AMIS </h2>
+
+                <form>
+                    <input
+                        name="first"
+                        placeholder="First name"
+                        onChange={(e) => this.handleChange(e)}
+                    />
+                    <input
+                        name="last"
+                        placeholder="Last name"
+                        onChange={(e) => this.handleChange(e)}
+                    />
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="E-mail"
+                        onChange={(e) => this.handleChange(e)}
+                    />
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Password"
+                        onChange={(e) => this.handleChange(e)}
+                    />
+                </form>
+                <button type="submit" onClick={(e) => this.register(e)} />
+                <footer>©HOAN-MY 2020</footer>
             </div>
         );
     }

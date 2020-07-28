@@ -39,38 +39,32 @@ export default class Login extends React.Component {
         console.log("rendering login");
         return (
             <div>
-                {this.state.LoginError ? (
-                    <p className="error">
-                        Oops... Please try again or refresh the page
-                    </p>
-                ) : (
-                    <p></p>
-                )}
-                <div className="row">
-                    <div className="column">
-                        <form>
-                            <h2> Already part of the community ? </h2>
-                            <input
-                                type="email"
-                                name="email"
-                                placeholder="E-mail"
-                                onChange={(e) => this.handleChange(e)}
-                            />
-                            <input
-                                type="password"
-                                name="password"
-                                placeholder="Password"
-                                onChange={(e) => this.handleChange(e)}
-                            />
-                            <input
-                                type="submit"
-                                value="Login"
-                                onClick={(e) => this.login(e)}
-                            />
-                        </form>
-                    </div>
-                    <div className="column"></div>
+                <h1>VOYAGE</h1>
+                <div className="side-button">
+                    <Link to="/welcome#/register">
+                        <h4>
+                            <h3 className="Links"> REGISTER </h3>
+                        </h4>
+                    </Link>
                 </div>
+                <h2> HAPPY TO SEE YOU </h2>
+
+                <form>
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="E-mail"
+                        onChange={(e) => this.handleChange(e)}
+                    />
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Password"
+                        onChange={(e) => this.handleChange(e)}
+                    />
+                </form>
+                <button type="submit" onClick={(e) => this.login(e)} />
+                <footer>©HOAN-MY 2020</footer>
             </div>
         );
     }

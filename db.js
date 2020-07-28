@@ -9,6 +9,18 @@ if (process.env.DATABASE_URL) {
     db = spicedPg(`postgres:${dbUser}:${dbPw}@localhost:5432/trip`);
 }
 
+exports.updateBio = (id, bio) => {
+    return db.query(
+        `
+        UPDATE users 
+        SET bio=$2
+        WHERE id=$1
+        RETURNING bio
+        `,
+        [id, bio]
+    );
+};
+
 exports.insertUser = (first, last, email, password) => {
     return db.query(
         `INSERT INTO users (first, last, email, password) VALUES ($1, $2, $3, $4) RETURNING id`,
@@ -20,6 +32,13 @@ exports.insertForm = (dateStart, dateEnd, location) => {
     return db.query(
         `INSERT INTO form (dateStart, dateEnd, location) VALUES ($1, $2, $3) RETURNING id`,
         [dateStart, dateEnd, location]
+    );
+};
+
+exports.insertPlan = (date, toDo, toEat, toSleep) => {
+    return db.query(
+        `INSERT INTO form (date, toDo, toEat, toSleep) VALUES ($1, $2, $3, $4) RETURNING id`,
+        [date, toDo, toEat, toSleep]
     );
 };
 

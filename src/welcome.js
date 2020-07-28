@@ -7,14 +7,12 @@ import { HashRouter, Route } from "react-router-dom";
 export default function Welcome() {
     return (
         <div>
-            <h1>TRAVEL PLANNER</h1>
             <HashRouter>
                 <React.Fragment>
-                    <Route exact path="/" component={Register} />
                     <Route path="/login" component={Login} />
+                    <Route path="/" component={Register} />
                 </React.Fragment>
             </HashRouter>
-            <footer>©Hoan-My 2020</footer>
         </div>
     );
 }

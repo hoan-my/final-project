@@ -58,32 +58,30 @@ export default class Form extends React.Component {
                     ) : (
                         <p></p>
                     )}
-                    <div className="row">
-                        <div className="column">
-                            <form>
-                                <input
-                                    name="dateStart"
-                                    placeholder="FROM: "
-                                    onChange={(e) => this.handleChange(e)}
-                                />
-                                <input
-                                    name="dateEnd"
-                                    placeholder="TO: "
-                                    onChange={(e) => this.handleChange(e)}
-                                />
-                                <input
-                                    name="location"
-                                    placeholder="WHERE?"
-                                    onChange={(e) => this.handleChange(e)}
-                                />
+                    <div className="Profile">
+                        <h1>
+                            <input
+                                name="dateStart"
+                                placeholder="YYYY/MM/DD"
+                                onChange={(e) => this.handleChange(e)}
+                            />
+                            <input
+                                name="dateEnd"
+                                placeholder="YYYY/MM/DD"
+                                onChange={(e) => this.handleChange(e)}
+                            />
+                            <input
+                                name="location"
+                                placeholder="WHERE?"
+                                onChange={(e) => this.handleChange(e)}
+                            />
 
-                                <input
-                                    type="submit"
-                                    value="submit"
-                                    onClick={(e) => this.form(e)}
-                                />
-                            </form>
-                        </div>
+                            <input
+                                type="submit"
+                                value="submit"
+                                onClick={(e) => this.form(e)}
+                            />
+                        </h1>
                     </div>
                 </div>
             </BrowserRouter>

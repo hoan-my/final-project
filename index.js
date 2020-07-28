@@ -101,7 +101,7 @@ if (process.env.NODE_ENV != "production") {
 ////////////////////////////////////
 
 app.get("/welcome", (req, res) => {
-    console.log("req.session.userId:", req.session.userId);
+    console.log("req.session.userId:", req.session);
     if (req.session.userId) {
         /// if the user is logged in...
         res.redirect("/");
@@ -213,6 +213,24 @@ app.get("/plan", (req, res) => {
         .catch((err) => {
             res.sendStatus(500);
             console.log("Error in GET/user: ", err);
+        });
+});
+
+app.post("/plan", (req, res) => {
+    console.log(req.body);
+    db.insertPlan(
+        req.body.date,
+        req.body.toDo,
+        req.body.toEat,
+        req.body.toSleep
+    )
+        .then((result) => {
+            console.log("result in insertPlan:", result);
+            res.json(result.rows[0]);
+        })
+        .catch((err) => {
+            console.log("error in insertPlan:", err);
+            res.json(error);
         });
 });
 

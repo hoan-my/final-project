@@ -1,0 +1,532 @@
+* {
+    font-family: "Boogaloo", cursive;
+    font-size: 30px;
+    text-align: center;
+    color: grey;
+    text-decoration: none;
+    font-size: 20px;
+    text-transform: uppercase;
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    border: solid 60px rgb(192, 225, 236);
+    padding: 10px 10px;
+}
+
+h1 {
+    font-family: "Racing Sans One", cursive;
+    font-size: 160px;
+    color: #a42424;
+    text-shadow: -10px 10px 0px yellow, -20px 20px 0px gold,
+        -30px 30px 0px goldenrod;
+    margin-bottom: 10%;
+    padding: 50px 50px;
+    z-index: 2;
+}
+
+h10 {
+    font-family: "Racing Sans One", cursive;
+    font-size: 260px;
+    color: #a42424;
+    text-shadow: -10px 10px 0px yellow, -20px 20px 0px gold,
+        -30px 30px 0px goldenrod;
+    margin-bottom: 10%;
+    z-index: 2;
+}
+
+h10:hover {
+    font-size: 270px;
+}
+
+h2 {
+    transform: rotate(-5deg);
+    font-family: "Racing Sans One", cursive;
+    margin-top: -150px;
+}
+
+h6 {
+    font-family: "Racing Sans One", cursive;
+    font-size: 40px;
+    color: #a42424;
+    text-shadow: -4px 4px 0px yellow, -6px 6px 0px gold, -9px 9px 0px goldenrod;
+}
+
+h7 {
+    font-family: "Racing Sans One", cursive;
+    font-size: 280px;
+    color: lightgoldenrodyellow;
+    position: fixed;
+    left: -55px;
+    z-index: -1;
+}
+
+h8 {
+    font-family: "Racing Sans One", cursive;
+    font-size: 100px;
+    color: lightgrey;
+    position: relative;
+    left: 55px;
+}
+
+/* PROFILEEEEEE */
+.Profile {
+    width: 700px;
+    height: 720px;
+}
+.line-1 {
+    position: absolute;
+    top: 45%;
+    width: 155em;
+    margin: 0 auto;
+    margin-left: 10%;
+    border-right: 2px solid rgba(255, 255, 255, 0.75);
+    font-size: 200%;
+    white-space: nowrap;
+    overflow: hidden;
+    transform: translateY(-50%);
+}
+
+/* Animation */
+.anim-typewriter {
+    animation: typewriter 5s steps(44) 1s 1 normal both,
+        blinkTextCursor 500ms steps(44) infinite normal;
+}
+@keyframes typewriter {
+    from {
+        width: 0;
+    }
+    to {
+        width: 24em;
+    }
+}
+@keyframes blinkTextCursor {
+    from {
+        border-right-color: rgba(255, 255, 255, 0.75);
+    }
+    to {
+        border-right-color: transparent;
+    }
+}
+/* LIIIIINKKKKSSSS*/
+
+:root {
+    --colorShadeA: #a42424;
+    --colorShadeB: goldenrod;
+    --colorShadeC: gold;
+    --colorShadeD: white;
+    --colorShadeE: white;
+}
+
+h4 {
+    box-sizing: border-box;
+}
+h4::before,
+h4::after {
+    box-sizing: border-box;
+}
+
+h3 {
+    position: relative;
+    align-items: center;
+    display: inline-block;
+    cursor: pointer;
+    outline: none;
+    border: 0;
+    vertical-align: middle;
+    text-decoration: none;
+    font-size: 20px;
+    color: var(--colorShadeA);
+    font-weight: lighter;
+    text-transform: uppercase;
+    font-family: "Racing Sans One", cursive;
+}
+
+h3.Links {
+    padding: 5px 10px;
+    align-items: center;
+    border: 2px solid var(--colorShadeA);
+    /* border-radius: 1em; */
+    background: var(--colorShadeE);
+    transform-style: preserve-3d;
+    transition: all 175ms cubic-bezier(0, 0, 1, 1);
+}
+h3.Links::before {
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--colorShadeC);
+    /* border-radius: inherit; */
+    box-shadow: 0 0 0 5px var(--colorShadeB), 0 10px 5px var(--colorShadeA);
+    transform: translate3d(0, 0.3em, -1em);
+    transition: all 175ms cubic-bezier(0, 0, 1, 1);
+}
+
+h3.Links:hover {
+    background: var(--colorShadeD);
+    transform: translate(0, 0.3em);
+}
+
+h3.Links:hover::before {
+    transform: translate3d(0, 0.3em, -1em);
+}
+
+h3.Links:active {
+    transform: translate(0em, 0.3em);
+}
+
+h3.Links:active::before {
+    transform: translate3d(0, 0, -1em);
+
+    box-shadow: 0 0 0 2px var(--colorShadeB), 0 0.4em 0 0 var(--colorShadeB);
+}
+
+/* LIIIIINKKKKSSSS*/
+
+.side-button {
+    position: relative;
+    top: -425px;
+    right: -600px;
+    margin-bottom: 20px;
+}
+
+.button-app {
+    position: absolute;
+    top: 10px;
+    right: 50px;
+}
+
+footer {
+    margin-top: 40px;
+    font-family: "Racing Sans One", cursive;
+    color: #a42424;
+    text-shadow: 6px 6px 0px gold;
+}
+
+button {
+    background-image: url(paperplane.gif);
+    width: 80px;
+    height: 80px;
+    -ms-background-position-x: center;
+    -ms-background-position-y: bottom;
+    background-position: center bottom;
+    background-size: cover;
+    border: none;
+}
+
+button:hover {
+    background-size: 100px;
+}
+input {
+    border-bottom-color: gold;
+    border-bottom-width: 5px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    outline: none;
+    color: #a42424;
+    margin: 35px;
+    width: 400px;
+}
+
+input:hover {
+    border-bottom-color: goldenrod;
+    width: 450px;
+}
+input[placeholder]:hover {
+    font-size: 25px;
+    color: #a42424;
+}
+
+input::-webkit-caps-lock-indicator {
+    display: none;
+}
+
+input::-webkit-c#a42424entials-auto-fill-button {
+    display: none;
+}
+
+form {
+    transform: rotate(-5deg);
+    /* display: grid;
+    justify-items: center;
+    grid-template-columns: 5px 1fr 1fr; */
+}
+
+/* PLAAAANNNNERRRRR */
+
+.Planner {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr 1fr;
+    background-color: lightgoldenrodyellow;
+}
+
+.Planner-title {
+    font-family: "Racing Sans One", cursive;
+    font-size: 30px;
+    color: grey;
+    z-index: 2;
+    text-decoration: none;
+    margin-top: -50px;
+    margin-bottom: 50px;
+    text-transform: uppercase;
+    transform: rotate(-5deg);
+}
+
+li {
+    list-style-type: none;
+}
+
+.container {
+    padding: 50px 50px;
+}
+
+.Day {
+    transform: rotate(-5deg);
+    font-family: "Racing Sans One", cursive;
+    color: #a42424;
+    text-shadow: -1px 1px 0px yellow, -2px 2px 0px gold, -3px 3px 0px goldenrod;
+}
+
+.Menu {
+    position: relative;
+    top: -100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+}
+
+.arrow {
+    font-family: "Racing Sans One", cursive;
+    font-size: 60px;
+    color: #a42424;
+    text-shadow: -10px 10px 0px yellow, -20px 20px 0px gold,
+        -30px 30px 0px goldenrod;
+    margin-top: -20px;
+    margin-bottom: 50px;
+    z-index: 2;
+}
+
+img {
+    position: fixed;
+    top: 60%;
+    right: 17%;
+    height: 200px;
+    width: 200px;
+    z-index: -1;
+}
+
+.app {
+    position: fixed;
+    height: 70%;
+    width: 50%;
+    /* background-color: rgba(255, 255, 224, 0.897); */
+    background-color: white;
+    z-index: 4;
+    padding: 30px 30px;
+    font-size: 10px;
+    display: grid;
+    color: black;
+    align-items: center;
+    grid-template-columns: 1fr 1fr;
+    border: solid 20px rgb(192, 225, 236);
+    box-shadow: 5px 10px rgba(189, 189, 189, 0.651);
+    /* border-width: 5px;
+    border-color: #a42424;
+    border-style: solid;
+    box-shadow: -10px 10px 0px yellow, -20px 20px 0px gold,
+        -30px 30px 0px goldenrod; */
+}
+
+/* Base for label styling */
+[type="checkbox"]:not(:checked),
+[type="checkbox"]:checked {
+    position: absolute;
+    left: -9999px;
+}
+[type="checkbox"]:not(:checked) + label,
+[type="checkbox"]:checked + label {
+    position: relative;
+    padding-left: 1.95em;
+    cursor: pointer;
+}
+
+/* checkbox aspect */
+[type="checkbox"]:not(:checked) + label:before,
+[type="checkbox"]:checked + label:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1.25em;
+    height: 1.25em;
+    border: 2px solid #ccc;
+    background: #fff;
+
+    border-radius: 4px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+/* checked mark aspect */
+[type="checkbox"]:not(:checked) + label:after,
+[type="checkbox"]:checked + label:after {
+    content: "\2713\0020";
+    position: absolute;
+    top: 0.15em;
+    left: 0.22em;
+    font-size: 1.3em;
+    line-height: 0.8;
+    color: #a42424;
+    transition: all 0.2s;
+    font-family: "Lucida Sans Unicode", "Arial Unicode MS", Arial;
+}
+/* checked mark aspect changes */
+[type="checkbox"]:not(:checked) + label:after {
+    opacity: 0;
+    transform: scale(0);
+}
+[type="checkbox"]:checked + label:after {
+    opacity: 1;
+    transform: scale(1);
+}
+/* disabled checkbox */
+[type="checkbox"]:disabled:not(:checked) + label:before,
+[type="checkbox"]:disabled:checked + label:before {
+    box-shadow: none;
+    border-color: #bbb;
+    background-color: #ddd;
+}
+[type="checkbox"]:disabled:checked + label:after {
+    color: grey;
+}
+[type="checkbox"]:disabled + label {
+    color: grey;
+}
+/* accessibility */
+[type="checkbox"]:checked:focus + label:before,
+[type="checkbox"]:not(:checked):focus + label:before {
+    border: 2px dotted #a42424;
+}
+
+/* hover style just for information */
+label:hover:before {
+    border: 2px solid #a42424 !important;
+}
+
+/*CHAAAAAAAAT*/
+.app2 {
+    position: fixed;
+    height: 70%;
+    width: 50%;
+    /* background-color: rgba(255, 255, 224, 0.897); */
+    background-color: white;
+    z-index: 4;
+    /* padding: 20px 20px; */
+    font-size: 10px;
+    /* border-width: 5px;
+    border-color: #a42424;
+    border-style: solid;
+    box-shadow: -10px 10px 0px yellow, -20px 20px 0px gold,
+        -30px 30px 0px goldenrod; */
+    border: solid 20px rgb(192, 225, 236);
+    box-shadow: 5px 10px rgba(189, 189, 189, 0.651);
+}
+
+.container {
+    border-width: 5px;
+    /* border-color: #a42424;
+    border-style: solid;
+    box-shadow: -10px 10px 0px yellow, -20px 20px 0px gold,
+        -30px 30px 0px goldenrod; */
+    margin: 35px 35px;
+    padding: 0px 0px;
+}
+
+.chat-container {
+    position: relative;
+    margin-top: 50px;
+    padding: 10px 10px;
+    display: grid;
+    align-items: flex-start;
+    grid-template-columns: 1fr 1fr;
+}
+.chat-container1 {
+    position: relative;
+    margin-top: 0px;
+    margin-left: 100px;
+    padding: 10px 10px;
+    display: grid;
+    align-items: flex-start;
+    grid-template-rows: 1fr 1fr 1fr;
+}
+.chat-container2 {
+    position: relative;
+    padding: 10px 10px;
+    display: grid;
+    align-items: flex-start;
+    grid-template-rows: 1fr 1fr 1fr;
+}
+
+.chatSender {
+    color: #a42424;
+    font-family: "Racing Sans One", cursive;
+}
+
+.chatMsg {
+    font-family: "Racing Sans One", cursive;
+}
+
+textarea {
+    position: absolute;
+    top: 80%;
+    left: 0%;
+    height: 40px;
+    width: 250px;
+    border-bottom-color: gold;
+    border-bottom-width: 5px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    outline: none;
+    color: #a42424;
+    margin: 35px;
+}
+
+.Budget {
+    padding: 50px;
+    align-items: center;
+}
+
+.Register {
+    width: 100%;
+    height: 720px;
+}
+
+/* ARRRRROOOWWWWS */
+#arrow-top,
+#arrow-bottom {
+    /* margin-top: 0%;
+    padding-bottom: 25%; */
+    font-family: "Racing Sans One", cursive;
+    font-size: 50px;
+    padding: 50px 50px;
+    color: #a42424;
+    text-shadow: -10px 10px 0px yellow, -20px 20px 0px gold,
+        -30px 30px 0px goldenrod;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+#arrow-top:hover,
+#arrow-bottom:hover {
+    font-size: 90px;
+}
