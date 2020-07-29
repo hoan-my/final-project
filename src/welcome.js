@@ -9,8 +9,8 @@ export default function Welcome() {
         <div>
             <HashRouter>
                 <React.Fragment>
-                    <Route path="/login" component={Login} />
                     <Route path="/" component={Register} />
+                    <Route path="/login" component={Login} />
                 </React.Fragment>
             </HashRouter>
         </div>

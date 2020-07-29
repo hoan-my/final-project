@@ -8,6 +8,9 @@
     text-transform: uppercase;
     margin: 0px;
     padding: 0px;
+    outline: none;
+    cursor: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/9632/heart.svg),
+        auto;
 }
 
 body {
@@ -68,6 +71,13 @@ h8 {
     color: lightgrey;
     position: relative;
     left: 55px;
+}
+
+h11 {
+    font-family: "Racing Sans One", cursive;
+    font-size: 70px;
+    color: #a42424;
+    text-shadow: -4px 4px 0px yellow, -6px 6px 0px gold, -9px 9px 0px goldenrod;
 }
 
 /* PROFILEEEEEE */
@@ -460,7 +470,7 @@ label:hover:before {
 .chat-container1 {
     position: relative;
     margin-top: 0px;
-    margin-left: 100px;
+    margin-left: 250px;
     padding: 10px 10px;
     display: grid;
     align-items: flex-start;
@@ -520,6 +530,7 @@ textarea {
     color: #a42424;
     text-shadow: -10px 10px 0px yellow, -20px 20px 0px gold,
         -30px 30px 0px goldenrod;
+    cursor: pointer;
 }
 
 html {
@@ -529,4 +540,26 @@ html {
 #arrow-top:hover,
 #arrow-bottom:hover {
     font-size: 90px;
+}
+
+.Form {
+    height: 700px;
+    width: 1000px;
+    margin-left: 50px;
+    display: grid;
+    align-items: flex-start;
+}
+input.form-input {
+    font-family: "Racing Sans One", cursive;
+    font-size: 70px;
+    color: #a42424;
+    border: none;
+    width: 500px;
+    background-color: transparent;
+    transform: rotate(-5deg);
+    opacity: 0.8;
+}
+
+input.form-input:hover {
+    font-size: 80px;
 }

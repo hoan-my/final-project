@@ -50,7 +50,7 @@ export default class Form extends React.Component {
     render() {
         return (
             <BrowserRouter>
-                <div>
+                <div className="Form">
                     {this.state.FormError ? (
                         <p className="error">
                             Oops... Please try again or refresh the page
@@ -58,30 +58,51 @@ export default class Form extends React.Component {
                     ) : (
                         <p></p>
                     )}
-                    <div className="Profile">
-                        <h1>
+                    <div className="Form">
+                        <h7>VOYAGE VOYAGE</h7>
+
+                        <p>
+                            <h11>Start Date </h11>
                             <input
+                                className="form-input"
                                 name="dateStart"
                                 placeholder="YYYY/MM/DD"
                                 onChange={(e) => this.handleChange(e)}
                             />
-                            <input
-                                name="dateEnd"
-                                placeholder="YYYY/MM/DD"
-                                onChange={(e) => this.handleChange(e)}
-                            />
-                            <input
-                                name="location"
-                                placeholder="WHERE?"
-                                onChange={(e) => this.handleChange(e)}
-                            />
+                        </p>
+                        <p>
+                            <h11>
+                                End Date
+                                <input
+                                    name="dateEnd"
+                                    className="form-input"
+                                    placeholder="YYYY/MM/DD"
+                                    onChange={(e) => this.handleChange(e)}
+                                />
+                            </h11>
+                        </p>
+                        <p>
+                            <h11>
+                                Where ?
+                                <input
+                                    name="location"
+                                    className="form-input"
+                                    placeholder="LOCATION"
+                                    onChange={(e) => this.handleChange(e)}
+                                />
+                            </h11>
+                        </p>
 
-                            <input
+                        <h4>
+                            <h3
+                                className="Links"
                                 type="submit"
                                 value="submit"
                                 onClick={(e) => this.form(e)}
-                            />
-                        </h1>
+                            >
+                                START MY PLANNER
+                            </h3>
+                        </h4>
                     </div>
                 </div>
             </BrowserRouter>
